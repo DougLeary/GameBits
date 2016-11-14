@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Tavern Name Generator -->
+<Tables>
+	<Table TableName="Tavern Names">
+		<DieRoll Sides="4" />
+		<Row HighRoll="1">
+			<TableRoll TableName="Noun" Rolls="3" IgnoreAbove="99" />
+		</Row>
+	</Table>
+</Tables>

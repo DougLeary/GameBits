@@ -1,0 +1,35 @@
+﻿Editors
+
+RollableTable
+
+DieRoll
+
+RollableTableRow
+
+DieRollRange
+
+ResultItem - series of items for one RollableTableRow
+  GameObject
+  GameObjectInstance
+  Count
+  DieRoll
+  Multiplier
+  Percentage
+  TableRoll
+  -- Could do a ResultItem parser 
+  -- Forms would be more friendly
+
+-------------
+
+RollableTableRow editor invokes SaveRow web method on the service;
+- in table [tableName] save this [DieRollRange] + [ResultItem]
+
+Service parses ResultItem and either saves the row or rejects it with a msg. 
+Editor displays the msg.
+
+-------------
+
+Client side: one copy of edit scripts, multiple editors 
+- editors.js
+- 
+

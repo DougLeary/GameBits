@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <script  src="http://code.angularjs.org/1.2.13/angular.js"></script>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/Angular/style.css" />
+  <script>
+  	var app;
+  	app = angular.module("app", []);
+  	app.controller("MaintCtrl", function (LS) {
+  		this.greeting = "This is a localstorage demo app";
+  		this.value = LS.getData();
+  		this.latestData = function () {
+  			return LS.getData();
+  		};
+  		this.update = function (val) {
+  			return LS.setData(val);
+  		};
+  	});
+  	app.factory("LS", function ($window, $rootScope) {
+  		return {
+  			setData: function (val) {
+  				$window.localStorage && $window.localStorage.setItem('my-storage', val);
+  				return this;
+  			},
+  			getData: function () {
+  				return $window.localStorage && $window.localStorage.getItem('my-storage');
+  			}
+  		};
+  	});
+  </script>
+</head>
+<body ng-controller="MaintCtrl as m">
+  <h1></h1>
+  <h2>Current LocalStorage value is = <em></em></h2>
+  <input type="text" ng-model="m.value">
+  <input type="button" value="update" ng-click="m.update(m.value)">
+</body>
+</html>

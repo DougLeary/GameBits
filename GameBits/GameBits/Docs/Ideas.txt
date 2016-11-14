@@ -1,0 +1,141 @@
+﻿12/2/2012 - thoughts on persisting objects
+Loading references to undefined objects has been a problem almost from day one of this project.
+Ideas:
+Give every object an ID.
+Reference objects by ID instead of by pointer
+ - OR use the ID in storage and use pointers in memory. 
+
+Save: save object ID
+
+LoadReference: if the ID does not exist in Repository, create an object with default values and give it that ID.
+
+Load: if the ID exists in storage, update it, otherwise create it. 
+
+So if a reference is loaded before the object, an empty object is created and the referencing object gets a pointer to it; 
+then when the actual object is loaded, the empty object gets filled in. 
+
+Actually this just shifts the problem to the load/save part of the system. 
+When we save a reference to an object how do we convert the reference pointer to the object's ID? 
+Objects would have to have their IDs while in the repository. So we wouldn't assign the ID values during Save, we would have to do it during Create. 
+I guess we could assign during Save -- to save a reference we get the referenced object by pointer and get its ID. If it has none we save the referenced object, which assigns it an ID. The object's Save method would do this and return the ID. If the object already has an ID the Save method would merely return the ID, because an object with an ID means it has already been saved. 
+
+The Load and Save methods could be part of an interface - IPersistent or something. 
+We would pass a pointer to the storage object in Load and Save, which would pass it down to constituent objects. 
+I like the idea of doing this in Load and Save instead of in constructors. Constructors know nothing about the ID. 
+Actually the objects themselves wouldn't even need an ID property. The storage object could construct a temporary index during Load and Save.
+Just a list of IPersistent objects with an ID for each:
+- When an object is Saved we assign an ID and add it to the index.
+- When a reference is Saved we look up the object id in the index, Saving the referenced object if it is not in the index yet. 
+- When an object is Loaded, if its ID is already in the index we update the object's data, otherwise we add the ID and pointer to the index.
+- When a reference is Loaded we have the ID; we look up the pointer by ID, creating an empty object and storing its pointer and ID in the index.
+
+Another approach: completely separate the object classes from the storage scheme. 
+- Create a persistence class with its own methods to load and save a Repository and other GameBits classes. 
+- The classes would have no Load/Save methods and would be unaware of the persistence object. 
+- Keep the Repository class as an in-memory structure that holds everything.
+
+For converting text inputs to objects, create a StringParser class in the Persistence namespace. 
+This class will have a TryParse method modeled after the ItemMaker.Make method, doing what is necessary to generate each object class from a string. 
+
+Small glitch - I want to model StringParser.Parse after ItemMaker.Make, returning an IResolver (instead of returning a bool and requiring an output parameter as the TryParse methods do). But RollableTable and RollableList are not IResolvers. Instead of Resolve methods they have Roll methods that return IResolvers. I will convert these two classes to IResolvers and change their Roll methods to Resolve. I will have to modify all the consuming code to call Resolve instead of Roll. Not hard, just busywork. 
+
+12/13/2012 - Actually RollableTable and RollableList have Roll methods that take parameters; they weren't meant to be resolved without parameters and should not implement IResolver. That's what TableRoll is for, and today I added ListRoll to do the same for RollableList. For string loading I will create an IParsable interface that is implemented by RollableTable, RollableList, and all the IResolvers. The string parser, which is now just called Parser, will have a Parse method that returns an IParsable. To make the compiler happy I added dummy WriteXml and FromXml methods to ListRoll. 
+
+12/14 - Provider idea:
+GameBitsProvider class with abstract Save and Load methods to save/load a group of tables to/from a data source.
+subclasses:
+  XmlProvider: FromXml and WriteXml logic
+  StringProvider: Parse logic
+
+-----------------------------
+
+
+10/19/2011 - should enforce maximum values for various things --  # of rolls, multipliers, die sides, etc. to protect the server 
+
+-----------------------------
+
+
+Multipliers
+
+Examples: 1d4 *1000 gp, d6 *10 orcs
+
+d6 * 10 means 10, 20, 30, 40, 50 or 60.
+This is different from 6d10 which means multiples of 6 from 6 to 60, or d60 which means any number 1-60.
+
+
+Percentages - implemented in ItemRoll
+
+Sometimes there is a percent chance of something happening; common with treasures types:
+2 jewelry (25%), 1 miscellaneous magic (10%)
+Each item has a percentage chance of occurring, and they do not exclude each other. 
+
+There are also mutually exclusive percentages:
+10% of MonsterX are immune to fire and 10% are immune to cold.
+This does not mean you roll a percentile for each immunity, it means you roll a percentile once; 
+1-10 indicates fire immunity, 11-20 indicates cold immunity, 21-100 indicates neither. 
+
+To specify several percentages as mutually exclusive or not:
+
+Maybe: percentage items grouped by parentheses are mutually exclusive:
+(potion 30%, ring 20%, scroll 10%) means roll a single percentile and choose one item (or none if 61-100 is rolled). 
+Non-grouped items are rolled independently:
+potion 10%, ring 20%, scroll 10%   means roll percentile for each item; multiple items can occur.
+
+
+Could also use square brackets or some other grouping token. 
+
+---------------------------
+
+Table Storage
+
+Doing table rolls via Ajax calls requires that whatever service is called must have access to the tables. 
+This takes the tables out of the realm of on-the-fly creation in a .cs file as in TableRollDemo.aspx.
+Even if the tables are created by a web page they must be accessible to an Ajax-callable service for rolling.
+
+
+Session["GameBits"] = GameBitsSession object
+
+GameBitsSession class 
+  props:
+    MyTables : sorted list of RollableTables
+  
+  methods:
+    RollableTable GetRollableTable(name)
+    void SaveRollableTable(RollableTable table) - throws error if table already exists
+    void SaveRollableTable(RollableTable table, bool forceSave) - saves table, overwriting if a table with the same name exists
+	bool TableExists(name) - return true if table name exists
+	
+Tables are saved in a Sql Server database or in XML files depending on provider config. 
+Start with Sql Server provider then figure out how to switch.
+
+
+Some kind of namespace scheme for multiple users;
+  no fixed format within a user's namespace, but typical would be:
+    username.global.tablename
+    username.campaignname.tablename
+  
+
+Database
+
+GetGameObjects
+GetItemLists
+GetItemRolls
+GetRollableTables
+GetTableRolls
+
+=======================================
+
+9/5/2012 - End-of-day Notes
+
+- Converted entire project to eliminate most of the passing of GameBitsSession params in methods.
+- Connect method is now static and returns void; it still creates a GameBitsSession if needed and stores it in the user Session object.
+- A new method GetCurrentSession gets the current GameBitsSession from the user Session.
+- Load, Save and SortedList are still instance methods, so they require the caller to call GetCurrentSession and call them on that instance.
+  Could they become static and call GetCurrentSession? 
+  Note: I want to allow for multiple sessions on the system, probably only one session at a time per user session. 
+- GameBitsSession now has a Name property. Possibly there should be an access scheme. 
+  Possibly each GameBitsSession (which really should change to Repository now) should be tagged with an access list. 
+  - default GameBitsSession for each user
+  - UI's responsibility to display sessions the user has access to, and they must select one. 
+
+ 

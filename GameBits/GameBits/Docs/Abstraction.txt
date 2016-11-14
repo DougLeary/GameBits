@@ -1,0 +1,21 @@
+﻿
+Idea 9/6/2012
+
+Right now I like the state this is in. 
+All the methods of GameBitsSession are static.
+
+Originally each app instantiated a GameBitsSession, which it kept in the ASP.Net User Session object. So each user had his or her own GameBitsSession. This GameBitsSession instance was passed around by numerous methods so that when a Table or TableRoll was read from XML, the RollableTable it referenced could be looked up in the session and created if necessary, allowing references to undefined tables. 
+
+Now the current GameBitsSession instance is completely in the background. Every method that requires a GameBitsSession object calls a new static method GetCurrentSession. This method gets the current GameBitsSession from the User Session, creating one if none exists. Calling any method that requires a GameBitsSession will instantiate a new one if one doesn't exist already. For example, to load a table from XML an app can call GameBitsSession.Load. The first time a Table or TableRoll tag is parsed, GetCurrentTable instantiates a GameBitsSession to do a table lookup/create. This GameBitsSession becomes the current session. 
+
+Next Phase: 
+- Make GameBitsSession an abstract class called GameBitsBase or just Repository.
+- Descendant classes can implement GetCurrentSession differently.
+- GameBitsSession will become a descendant of Repository, maybe UserSessionRepository; this class stores an instance of itself in the User Session. Probably rename it something like GameBitsUserRepository to show that it maintains one repository per user. 
+- Create other sample Repository descendant classes that select the current repository based on additional class properties, config settings, user input, group membership, etc. 
+
+To do repository selection based on config settings, a class would have static properties which a static constructor loads from config. 
+Then GetCurrentSession uses these properties instead of looking in the config all the time. 
+
+A dashboard app could use a descendant class with a writable Repository property, dynamically loading a repository based on user selection or whatever. 
+

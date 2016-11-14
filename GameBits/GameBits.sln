@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2D46EB02-6331-4AD1-8B94-33F0924FBF26}"
+	ProjectSection(SolutionItems) = preProject
+		GameBits.vsmdi = GameBits.vsmdi
+		GameBits1.vsmdi = GameBits1.vsmdi
+		GameBits2.vsmdi = GameBits2.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameBits", "GameBits\GameBits.csproj", "{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealmSmith", "Rpg1\RealmSmith.csproj", "{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

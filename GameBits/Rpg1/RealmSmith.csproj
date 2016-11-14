@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BED294BA-CB0F-4F8C-98AF-C3C8EE1E26D9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RealmSmith</RootNamespace>
+    <AssemblyName>RealmSmith</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Angular\detail.html" />
+    <Content Include="Angular\mongolab.js" />
+    <Content Include="Angular\project.js" />
+    <Content Include="Angular\style.css" />
+    <Content Include="Angular\Test1.html" />
+    <Content Include="Angular\Test2.html" />
+    <Content Include="Angular\todo.css" />
+    <Content Include="Angular\todo.js" />
+    <Content Include="Dashboard.aspx" />
+    <Content Include="DiceService.asmx" />
+    <Content Include="ExampleBindableControl.ascx" />
+    <Content Include="Angular\list.html" />
+    <Content Include="Images\yeeahhh.jpg" />
+    <Content Include="Scripts\LocalGameBits.js" />
+    <Content Include="Scripts\RollableTable.js" />
+    <Content Include="TableRollDemo2.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="EditTest.htm" />
+    <Content Include="EditTest2.htm" />
+    <Content Include="Knockout1.aspx" />
+    <Content Include="RollDice.aspx" />
+    <Content Include="Exp1.aspx" />
+    <Content Include="RollCharacter.aspx" />
+    <Content Include="Scripts\knockout-2.1.0.js" />
+    <Content Include="TableRollDemo.aspx" />
+    <Content Include="Tables\ADnD1E_Treasure.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Tables\GemsAndJewelry.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Tables\HuntingForest.xml" />
+    <Content Include="Tables\TavernNames.xml" />
+    <Content Include="Tables\TreasureTypes.xml" />
+    <Content Include="TestDieService.htm" />
+    <Content Include="TestLocalStorage.html" />
+    <Content Include="TextProviderTest.aspx" />
+    <Content Include="TreasureService.asmx" />
+    <Content Include="TreasureTypes.aspx" />
+    <Content Include="UserControlWrapper.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArduinSpecialAbilities.aspx.cs">
+      <DependentUpon>ArduinSpecialAbilities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArduinSpecialAbilities.aspx.designer.cs">
+      <DependentUpon>ArduinSpecialAbilities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CharacterBuilder.cs" />
+    <Compile Include="Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DiceService.asmx.cs">
+      <DependentUpon>DiceService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ExampleBindableControl.ascx.cs">
+      <DependentUpon>ExampleBindableControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExampleBindableControl.ascx.designer.cs">
+      <DependentUpon>ExampleBindableControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TableRollDemo2.aspx.cs">
+      <DependentUpon>TableRollDemo2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TableRollDemo2.aspx.designer.cs">
+      <DependentUpon>TableRollDemo2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard0.aspx.cs">
+      <DependentUpon>Dashboard0.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard0.aspx.designer.cs">
+      <DependentUpon>Dashboard0.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditGameObject.ascx.cs">
+      <DependentUpon>EditGameObject.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditGameObject.ascx.designer.cs">
+      <DependentUpon>EditGameObject.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditTable.aspx.cs">
+      <DependentUpon>EditTable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditTable.aspx.designer.cs">
+      <DependentUpon>EditTable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="JQueryUserControlHandler.ashx.cs">
+      <DependentUpon>JQueryUserControlHandler.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Knockout1.aspx.cs">
+      <DependentUpon>Knockout1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Knockout1.aspx.designer.cs">
+      <DependentUpon>Knockout1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main.Master.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main.Master.designer.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Mapper.aspx.cs">
+      <DependentUpon>Mapper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mapper.aspx.designer.cs">
+      <DependentUpon>Mapper.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RollableTableControl.ascx.cs">
+      <DependentUpon>RollableTableControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RollableTableControl.ascx.designer.cs">
+      <DependentUpon>RollableTableControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RollableTableEditor.ascx.cs">
+      <DependentUpon>RollableTableEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RollableTableEditor.ascx.designer.cs">
+      <DependentUpon>RollableTableEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RollableTableService.asmx.cs">
+      <DependentUpon>RollableTableService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RollDice.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>RollDice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RollDice.aspx.designer.cs">
+      <DependentUpon>RollDice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Exp1.aspx.cs">
+      <DependentUpon>Exp1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Exp1.aspx.designer.cs">
+      <DependentUpon>Exp1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RollCharacter.aspx.cs">
+      <DependentUpon>RollCharacter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RollCharacter.aspx.designer.cs">
+      <DependentUpon>RollCharacter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShowTable.aspx.cs">
+      <DependentUpon>ShowTable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShowTable.aspx.designer.cs">
+      <DependentUpon>ShowTable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TableRollDemo.aspx.cs">
+      <DependentUpon>TableRollDemo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TableRollDemo.aspx.designer.cs">
+      <DependentUpon>TableRollDemo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TextProviderTest.aspx.cs">
+      <DependentUpon>TextProviderTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TextProviderTest.aspx.designer.cs">
+      <DependentUpon>TextProviderTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TreasureService.asmx.cs">
+      <DependentUpon>TreasureService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TreasureTypes.aspx.cs">
+      <DependentUpon>TreasureTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TreasureTypes.aspx.designer.cs">
+      <DependentUpon>TreasureTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControlWrapper.aspx.cs">
+      <DependentUpon>UserControlWrapper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControlWrapper.aspx.designer.cs">
+      <DependentUpon>UserControlWrapper.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameBits\GameBits.csproj">
+      <Project>{C53ADB9C-C724-4B12-B8FA-E93B781A98F8}</Project>
+      <Name>GameBits</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dashboard0.aspx" />
+    <Content Include="ShowTable.aspx" />
+    <Content Include="Tables\Arduin.xml" />
+    <Content Include="ArduinSpecialAbilities.aspx" />
+    <Content Include="Tables\SampleTables.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SampleTextTool.htm" />
+    <Content Include="App_Data\Tables.xml" />
+    <Content Include="EditGameObject.ascx" />
+    <Content Include="EditTable.aspx" />
+    <Content Include="Images\cornerlogo.jpg" />
+    <Content Include="Images\realmsmithbanner1.jpg" />
+    <Content Include="Images\swordandaxe.jpg" />
+    <Content Include="JQueryTest.htm" />
+    <Content Include="JQueryTest2.htm" />
+    <Content Include="Main.Master" />
+    <Content Include="Mapper.aspx" />
+    <Content Include="RollableTableControl.ascx" />
+    <Content Include="RollableTableEditor.ascx" />
+    <Content Include="RollableTableService.asmx" />
+    <Content Include="Scripts\editors.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\pageTracking.js" />
+    <Content Include="Style.css" />
+    <Content Include="iframeTest\frOne.htm" />
+    <Content Include="iframeTest\frTwo.htm" />
+    <Content Include="iframeTest\main.htm" />
+    <Content Include="TestWebStorage.htm" />
+    <Content Include="WorldCreation.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="JQueryUserControlHandler.ashx" />
+    <Content Include="TestDataList.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <None Include="Properties\PublishProfiles\realmsmith.com - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\RealmsmithLocal.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3941</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/RealmSmith</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

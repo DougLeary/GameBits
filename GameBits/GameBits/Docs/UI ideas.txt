@@ -1,0 +1,26 @@
+﻿Tooltip Specs
+
+General ideas
+- Display tooltips when the user hovers over a key item.
+- Code tooltips as custom tags and attributes, convert to code with jQuery.
+
+-----------
+
+When the cursor moves over a target:
+  Start a timer to call ShowTooltip(target) in 500ms.
+When the cursor moves off a target or a tooltip:
+  Cancel the show-tooltip timer.
+  If tooltip is visible:
+    Start a timer to call HideTooltip() in 500ms.
+When the cursor moves onto a tooltip, cancel the hide-tooltip timer.
+
+StartTooltip(target)
+  if target has a tooltip:
+	HideTooltip()
+    load the target's tooltip into the tooltip div
+	position the tooltip div near the cursor
+	show the tooltip div
+
+HideTooltip()
+  hide the tooltip div
+

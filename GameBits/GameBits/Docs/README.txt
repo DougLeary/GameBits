@@ -1,0 +1,7 @@
+﻿GameBits is a collection of object classes for creating tables that replicate those used in RPG systems to generate random things -- monster encounters, treasure, weather, etc. See the more detailed wiki at realmsmith.com. It currently works using XML for table definitions. 
+
+There are a few unnecessary files in the project and some unused code because I changed direction a little on the XML stuff. There is a table cache in the Application object so that multiple users could share the tables. This is kind of an experiment. The original idea was that users would create tables in their own namespaces and also be able to share global tables. Multiple users who associated themselves with a particular namespace would have access to the tables in that space during their session. This feature is for tabletop game clients where players and the GM are sharing information. 
+
+I keep a lot of GM material in wiki format (I've tried Doku, Screwturn and Wikispaces). One thing I would really like to do is add table-rolling capability to a wiki engine - for example, to put random encounter tables in dungeon areas and roll on them at runtime, saving the results in HTML5 local storage. 
+
+The GameBits engine (if it can be called that) requires a separate client. My test example is Realmsmith.com. 

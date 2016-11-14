@@ -1,0 +1,141 @@
+IResolver Resolve()
+string ToString()
+int CompareTo(object other)
+void FromXml(XmlNode node)
+void WriteXml(XmlWriter writer)
+
+
+-------------------------------------------------------------
+DieRoll
+
+Properties:
+int Average 
+int Dice 
+int Keep 
+int Maximum 
+int Minimum 
+int Modifier 
+int Sides 
+string RangeText 
+
+Constructors:
+DieRoll(int, int, int, int) 
+DieRoll(int, int, int) 
+DieRoll(string) 
+DieRoll() 
+
+Methods:
+static Random random
+static bool TryParse(string, out DieRoll) 
+static int Roll(int, int, int, int) 
+static int Roll(int, int, int) 
+static int Roll(int, int) 
+static int Roll(string) 
+static int Roll() 
+static string FromString(string) 
+
+DieRollResults MultiRoll(int, int) 
+DieRollResults MultiRoll(int) 
+
+string ToString()
+int CompareTo(object other)
+void FromXml(XmlNode node)
+void WriteXml(XmlWriter writer)
+
+-------------------------------------------------------------
+DieRollResults : ArrayList
+
+int Total
+int Highest
+int Lowest
+int Average
+void KeepBest(int KeepHowMany)
+DieRollResults Sorted()
+DieRollResults Sorted(SortOrder sortOrder)
+string ToString()
+
+
+-------------------------------------------------------------
+ItemList : List<IResolver>, IResolver
+
+Properties:
+static Separator
+enum Format (Uncompressed, Compressed)
+
+Methods:
+IResolver Resolve()
+string ToString()
+string ToString(Format format)
+string ToString(Format format, SortedList<IResolver, int> list)
+int CompareTo(object other)
+FromXml(XmlNode node)
+WriteXml(System.Xml.XmlWriter writer)
+
+
+-------------------------------------------------------------
+GameObject : IResolver
+
+string Name
+string Plural
+string Description
+GameObject(string name, string plural)
+GameObject(string name)
+static bool TryParse(string name, out GameObject gameObject)
+static string DefaultPlural(string name)
+GameObject()
+
+
+-------------------------------------------------------------
+GameObjectInstance : IResolver
+
+GameObject Item
+int Count
+GameObjectInstance()
+GameObjectInstance(GameObject item, int count)
+GameObjectInstance(GameObject item)
+bool TryParse(string strInstance, out GameObjectInstance instance)
+string ToString()
+Resolve()
+CompareTo(object other)
+FromXml(XmlNode node)
+WriteXml(XmlWriter writer)
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------

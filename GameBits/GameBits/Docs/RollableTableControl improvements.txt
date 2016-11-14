@@ -1,0 +1,27 @@
+﻿RollableTableControl rewrite with proper databinding.
+
+I am modifying this control to use conventional databinding with a custom DataSource (RollableTable).
+
+Currently I am manually assigning RollableTableControl.DataSource to a RollableTable, which is retrieved from the current GameBitsSession.
+When a rollable table is rendered dynamically with an Ajax call, the control does not know about the current GameBitsSession. 
+
+Instead of explicitly assigning a DataSource I want to be able to specify a TableName in the markup and bind the right RollableTable automagically. 
+
+=================
+
+See http://msdn.microsoft.com/en-us/library/ms366539.aspx
+for extensive info on creating custom databound controls.
+
+Need to call OnDataPropertyChanged if a property that changes the datasource changes after the control is initialized; this will force it to re-databind. The only example of this that I've seen is for a simple databound column, when (I think) the field name that the data comes from changes. I'm not sure if this would apply if you assigned a different table to a RollableTableControl. 
+
+Retrieving data: override the PerformSelect method. Need an example, but it retrieves data and specifies a callback to handle the returned data.
+
+In PerformSelect you're supposed to determine whether the DataSource or DataSourceId is being used. See example.
+
+I think RollableTableControl should use the DataSource/DataSourceId mechanism to identify a GameBitsDataSource that communicates with the GameBitsSession. This datasource would instantiate a GameBitsSession and handle all interactions with it,instead of the web page doing it. The web page wouldn't see the GameBitsSession. This way the GBsession becomes a black box that could be implemented in the Application object, a database, set of files, etc. 
+
+So now to create a RollableTableControl with an Ajax request the client would pass the DataSourceId as a parameter, and the server-side code would have to be able to find the DataSource. How would that work since the DataSource is in a different page? Maybe Session variables, but if we do that we might as well make the control aware of the Application object and let just use the GameBitsSession directly. I'm still not sure about all this. 
+
+Remember we're not calling the control with Ajax, we are calling a page which instantiates the control. This page would be a kind of dispatcher, aware of the GameBitsSession and interacting with it on behalf of the controls. 
+
+

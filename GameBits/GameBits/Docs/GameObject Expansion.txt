@@ -1,0 +1,24 @@
+﻿GameObject expansion
+
+The GameObject class was always meant to be the base type for objects in a playable game, whether that be a tabletop game or a computer game. Originally I was going to make all objects in a game descendants of GameObject, but I think it would be better to create Interfaces for various pieces of functionality. For a computer game, functionality means actual behavior; for a tabletop game it simply means tracking and manipulating an object's properties. 
+
+Objects in a fantasy world don't really fit into a single hierarchy. For example, you might at first divide objects in a D&D world into characters, NPCs, monsters, weapons, treasures, and environment (terrain, buildings, weather, etc). But then some weapons are intelligent. Monsters can act as NPCs, and NPCs can turn out to be monsters in disguise. Inert objects like statues or rocks can be Animated by magic. A character can Polymorph or Shape Change into a monster. Objects don't fit into fixed slots in a hierarchy. 
+
+Everything in a world has an extensive set of attributes and capabilities. The concept of "monster" is a set of those. The concept of "treasure" is another set. Instead of placing objects into a hierarchy, let's define useful pieces of functionality that can be attached to objects. For example, most animals have the ability to move around. Things that can be attacked and damaged have hit points, health points, structural points - some concept of health. Such things usually also have some resistance to attack - armor class, toughness, or whatever. We can assign these things in groups; for example, when defining a "creature" we would probably give it some level of intelligence, movement, attack, defense, and health. 
+
+In the object-oriented software world a good way to express traits like these is with Interfaces. An interface is a set of properties and/or methods. An object class that has these is said to Implement that interface. Objects can be tested programmatically to see if they implement interfaces. So for example, to determine whether to inflict damage on an object, we could check if it implements the IDamagable interface, and if so call its ReceiveDamage method. For GameObjects I decided that Interfaces would be a good way to divide up behaviors amongst objects without putting them into fixed categories. 
+
+Example scenario - a PC cleric casts a Spiritual Hammer spell. 
+
+In a computer game the spell does the following things: 
+- creates an instance of a big hammer that has the abilities Fly and Attack
+- assigns the spellcaster as the Controller for the hammer, which means the spellcaster can issue commands to the hammer
+- starts a timer that will trigger the spell's Expiration event, which will Dispel the hammer
+  (timers can tick in real time, game time, rounds, turns, etc)
+
+The player or AI controlling the cleric also controls the hammer, until the hammer is Dispelled by the Expiration event (or by some other thing). 
+
+The game UI would have to let the player know about the items under his or her control. When an item is added to a Controller, the controller passes control to its own Controller, if any, and so on until the message reaches something that implements IController. This interface would have some method, say it's called TakeControl, which gathers information about the actions the controlled object can perform. A Player controller would update the UI to indicate that the object exists and provide a way to give it commands. 
+
+
+For the purpose of a table-rolling utility, to embed in a wiki or some other helper tool for tabletop RPG play, GameBits is pretty much done. I need to find a wiki engine where I can adapt it as a plug-in or add-on module. Parsing Wiki input and converting to XML might be a good additional feature. Indecipherable content and references to undefined tables would be treated as GameObjects and simply displayed. 
