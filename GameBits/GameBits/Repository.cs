@@ -56,14 +56,15 @@ namespace GameBits
 			return bits;
 		}
 
-		/// <summary>
-		/// Return the GameBits Repository from the current ASP.Net user session; 
-		/// meant to be called from a web client page or web service. 
-		/// </summary>
-		/// <param name="filePath">path to an XML file containing table definitions</param>
+        /// <summary>
+        /// Return the GameBits Repository from the current ASP.Net user session; 
+        /// meant to be called from a web client page or web service. 
+        /// </summary>
+        /// <param name="provider">data provider</param>
 		/// <param name="reload">if true then remove the current GameBits Repository and start a new one</param>
-		/// <returns></returns>
-		public static void Connect(XmlProvider provider, bool reload)
+        /// <returns></returns>
+        // not implemented: <param name="filePath">path to an XML file containing table definitions</param>
+        public static void Connect(XmlProvider provider, bool reload)
 		{
 			if (reload)
 			{

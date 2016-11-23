@@ -4,28 +4,35 @@ using System.Xml;
 
 namespace GameBits
 {
+    /// <summary>
+    /// Specification to generate an IResolver using a die roll
+    /// </summary>
 	public class ItemRoll : IResolver
 	{
 		/// <summary>
-		/// item to roll
+		/// IResolver object to be rolled up
 		/// </summary>
 		public IResolver Item { get; set; }
 	
 		/// <summary>
-		/// Die roll to determine count of rolled item
+		/// Die roll to determine the number of result items
 		/// </summary>
 		public DieRoll Dice { get; set; }
 
 		/// <summary>
-		/// Multiplies die roll results to arrive at item count, as in 1d4 x 1000 gp
+		/// Multiplies die roll result to arrive at item count, as in 1d4 x 1000 gp
 		/// </summary>
 		public int Multiplier { get; set; }
 
 		/// <summary>
-		/// Percentage chance that this ItemRoll will be performed
+		/// Percentage chance that this ItemRoll should be performed (default=100)
 		/// </summary>
 		public int Percent { get; set; }
 
+        /// <summary>
+        /// A d20 DieRoll used if no Dice property is assigned
+        /// </summary>
+        /// <returns></returns>
 		public static DieRoll DefaultDieRoll()
 		{
 			// default to d20
@@ -69,7 +76,7 @@ namespace GameBits
 		}
 
 		/// <summary>
-		/// Performs a die roll to generate one or more IResolvers
+		/// Performs a die roll to generate one or more IResolvers from Item
 		/// </summary>
 		/// <returns></returns>
 		public IResolver Roll()

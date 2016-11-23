@@ -177,8 +177,6 @@ namespace GameBits
 			return Roll();
 		}
 
-		/// </summary>
-		/// <returns></returns>
 		public IResolver Roll()
 		{
 			return Roll(0, int.MaxValue);

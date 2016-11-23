@@ -1,19 +1,28 @@
 ﻿GameBits To-Do
 ==============
+High Level
+  - Scheme for multiple repositories or namespaces
+  - Caching scheme - fetch from storage only when necessary, discard oldest items first 
+  - Plug-in scheme for data providers, game-specific components
+  - Providers - xml, MySql, etc.
 
+Notes
+----------
 Additional rolls within an item: 
 - scroll with 2 spells, level 1-4
 - scroll with 3 spells, level 1-8 for mages or 1-6 for clerics
 
-In AD&D 1E table II.B (Scrolls) 30% of all spell scrolls are clerical; 25% of which are druidical. Of the 70% that are magic-user scrolls, 10% are illusionist. GameBits table roller currently has no way of handling this logic. 
+In AD&D 1E table II.B (Scrolls) 30% of all spell scrolls are clerical; 25% of those are druidical. Of the 70% that are magic-user scrolls, 10% are illusionist. GameBits table roller currently has no way to handle this logic. 
 
-In terms of a RollableTable row item, GameBits does not yet implement percentages in this way. Percentages on IemRolls indicate a possibility of rolling or not rolling the item. There is no feature to select one item from a group based on a percentage. There is actually (very cumbersome) workaround: instead of an ItemRoll do a TableRoll on a set of small tables containing the possible forms of the item. Example: to roll a 3-spell scroll:
+In terms of a RollableTable row item, GameBits does not yet implement percentages in this way. Percentage on an ItemRoll indicates a possibility of rolling or not rolling the item. There is no feature to select an item from a group based on a percentage. 
+  There is a clumsy workaround: do a TableRoll on a set of small tables containing the possible forms of the item. 
+  Example: to roll a 3-spell scroll you could use a main table that determines whether it's a clerical or magic-user scroll, a clerical subtable to pick clerical or druidic, and a magic-user subtable to pick magic-user or illusionist. Each result would then roll 3 spells on a spell list. 
 
 ---------------------------
 
 <TableRoll TableName="Scroll of 3 Spells" />
-. . .
 
+// main table chooses clerical or magic-user 
 <Table TableName="Scroll of 3 Spells">
 	<DieRoll Sides="100" />
 	<Row HighRoll="30">
@@ -23,6 +32,7 @@ In terms of a RollableTable row item, GameBits does not yet implement percentage
 	</Row>
 </Table>
 
+// secondary tables 
 <Table TableName="Clerical Scrolls of 3 Spells">
 	<DieRoll Sides="100" />
 	<Row HighRoll="25">
@@ -45,11 +55,32 @@ In terms of a RollableTable row item, GameBits does not yet implement percentage
 
 ---------------------------
 
-Since Rolls="3" doesn't apply until after the type of scroll has been determined, a set of these tables would have to exist for each desired spell-count. 
-That entire set of tables would have to be replicated for each spell level range. Even then the end result would be a list of spells, rather than a scroll with spells on it. There is no way to format multiple results as one item, as in: "Scroll with n Clerical Spells: Result1, Result2, ..." 
+Problems: 
+- The value 3 must be hard-coded in the tables. A set of these tables would have to exist for each desired spell-count. 
+- Each set of tables for a given spell count would have to be replicated for any specific spell level range desired. 
+- The end result would be just a list of spells. There is no way to format multiple results as one item, as in: "Scroll with 3 Clerical Spells: Spell1, Spell2, Spell3".
 
-The same problem exists for generating any magic item that has multiple powers. 
+The same problem exists for generating a magic item that has multiple powers. 
 
 Need a way to specify performing a TableRoll a number of times. 
 
-Possibly this logic belongs at the GameObject level. A Spell Scroll could be an end-level object, like a Goblin is now. That object's Resolve would examine its properties and generate an instance. A scroll with 3 spells level 1-4 would instantiate itself with specific spells, just as a monster with Hit Dice, Treasure Type, etc. would resolve to a monster instance with specific hit points and treasure items. 
+=======================================
+11/21/2016
+
+It seems like the above functionality belongs at the GameObject/Instance level. 
+A Spell Scroll would be a GameObject with a spec to roll up spells, and would Resolve to a GameObjectInstance with a list of specific spells. 
+A GameObject should be able to contain a list of GameObjects, and an Instance to contain a list of Instances. A scroll with 3 spells should Resolve to a scroll instance containing 3 spell instances.
+
+IDEA: Add a Parent property to the List object. A magic amulet with 3 magical effects would be a list of the effects with a Parent that's an amulet. A scroll with 3 spells would be a list of spells and a container that's a Scroll. 
+Maybe a creature could even be a list of attributes (AC, HP etc.) with a container that specifies the type of creature. 
+Parent might be a better name than Container, because we're talking about one object being more of an attribute of another. 
+- would need circular reference detection
+Eventually we will have to deal with actual containment (e.g. gems in a sack in a chest). 
+
+BETTER IDEA: GameObject and GameObjectInstance should have a Contents list, possibly an ItemList.
+A magic amulet with 3 magical effects would be a GameObject whose Contents list contains 3 spell GameObjects.
+An instance of that amulet would be a GameObjectInstance whose Contents list contains 3 spell GameObjectInstances.
+The GameObject's Resolve method would return a GameObjectInstance whose Contents contains the resolved Contents of the GameObject. 
+
+Ok I implemented Contents on GameObject and GameObjectInstance.
+

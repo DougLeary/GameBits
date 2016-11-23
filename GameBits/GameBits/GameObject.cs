@@ -5,11 +5,16 @@ using System.Xml;
 
 namespace GameBits
 {
+    /// <summary>
+    /// Base class for an in-game entity, corresponding to a definition of an object such as a creature or magic spell in a game manual,
+    /// used to generate instances of that object.  
+    /// </summary>
 	public class GameObject : IResolver
 	{
 		private string _name;
 		private string _plural;
 		private string _description;
+        private ItemList _contents;
 
 		public string Name
 		{
@@ -29,11 +34,18 @@ namespace GameBits
 			set { _description = value; }
 		}
 
+        public ItemList Contents
+        {
+            get { return _contents;  }
+            set { _contents = value; }
+        }
+
 		public GameObject(string name, string plural)
 		{
 			Name = name;
 			Plural = plural;
 			Description = name;
+            Contents = null;
 		}
 
 		public GameObject(string name)
@@ -74,7 +86,7 @@ namespace GameBits
 
 
 		/// <summary>
-		/// Default constructor, for creating a new row in a RollableTable 
+		/// Default constructor, used internally when a new RollableTable row is created
 		/// </summary>
 		public GameObject()
 			: this(String.Empty)
@@ -88,7 +100,17 @@ namespace GameBits
 
 		public IResolver Resolve()
 		{
-			return new GameObjectInstance(this, 1);
+			GameObjectInstance instance = new GameObjectInstance(this, 1);
+            if (this.Contents == null)
+            {
+                instance.Contents = null;
+            }
+            else
+            {
+                instance.Contents = new ItemList();
+                instance.Contents = (ItemList)(this.Contents.Resolve());
+            }
+            return instance;
 		}
 
 		public int CompareTo(object other)

@@ -1,60 +1,4 @@
-﻿12/2/2012 - thoughts on persisting objects
-Loading references to undefined objects has been a problem almost from day one of this project.
-Ideas:
-Give every object an ID.
-Reference objects by ID instead of by pointer
- - OR use the ID in storage and use pointers in memory. 
-
-Save: save object ID
-
-LoadReference: if the ID does not exist in Repository, create an object with default values and give it that ID.
-
-Load: if the ID exists in storage, update it, otherwise create it. 
-
-So if a reference is loaded before the object, an empty object is created and the referencing object gets a pointer to it; 
-then when the actual object is loaded, the empty object gets filled in. 
-
-Actually this just shifts the problem to the load/save part of the system. 
-When we save a reference to an object how do we convert the reference pointer to the object's ID? 
-Objects would have to have their IDs while in the repository. So we wouldn't assign the ID values during Save, we would have to do it during Create. 
-I guess we could assign during Save -- to save a reference we get the referenced object by pointer and get its ID. If it has none we save the referenced object, which assigns it an ID. The object's Save method would do this and return the ID. If the object already has an ID the Save method would merely return the ID, because an object with an ID means it has already been saved. 
-
-The Load and Save methods could be part of an interface - IPersistent or something. 
-We would pass a pointer to the storage object in Load and Save, which would pass it down to constituent objects. 
-I like the idea of doing this in Load and Save instead of in constructors. Constructors know nothing about the ID. 
-Actually the objects themselves wouldn't even need an ID property. The storage object could construct a temporary index during Load and Save.
-Just a list of IPersistent objects with an ID for each:
-- When an object is Saved we assign an ID and add it to the index.
-- When a reference is Saved we look up the object id in the index, Saving the referenced object if it is not in the index yet. 
-- When an object is Loaded, if its ID is already in the index we update the object's data, otherwise we add the ID and pointer to the index.
-- When a reference is Loaded we have the ID; we look up the pointer by ID, creating an empty object and storing its pointer and ID in the index.
-
-Another approach: completely separate the object classes from the storage scheme. 
-- Create a persistence class with its own methods to load and save a Repository and other GameBits classes. 
-- The classes would have no Load/Save methods and would be unaware of the persistence object. 
-- Keep the Repository class as an in-memory structure that holds everything.
-
-For converting text inputs to objects, create a StringParser class in the Persistence namespace. 
-This class will have a TryParse method modeled after the ItemMaker.Make method, doing what is necessary to generate each object class from a string. 
-
-Small glitch - I want to model StringParser.Parse after ItemMaker.Make, returning an IResolver (instead of returning a bool and requiring an output parameter as the TryParse methods do). But RollableTable and RollableList are not IResolvers. Instead of Resolve methods they have Roll methods that return IResolvers. I will convert these two classes to IResolvers and change their Roll methods to Resolve. I will have to modify all the consuming code to call Resolve instead of Roll. Not hard, just busywork. 
-
-12/13/2012 - Actually RollableTable and RollableList have Roll methods that take parameters; they weren't meant to be resolved without parameters and should not implement IResolver. That's what TableRoll is for, and today I added ListRoll to do the same for RollableList. For string loading I will create an IParsable interface that is implemented by RollableTable, RollableList, and all the IResolvers. The string parser, which is now just called Parser, will have a Parse method that returns an IParsable. To make the compiler happy I added dummy WriteXml and FromXml methods to ListRoll. 
-
-12/14 - Provider idea:
-GameBitsProvider class with abstract Save and Load methods to save/load a group of tables to/from a data source.
-subclasses:
-  XmlProvider: FromXml and WriteXml logic
-  StringProvider: Parse logic
-
------------------------------
-
-
-10/19/2011 - should enforce maximum values for various things --  # of rolls, multipliers, die sides, etc. to protect the server 
-
------------------------------
-
-
+﻿
 Multipliers
 
 Examples: 1d4 *1000 gp, d6 *10 orcs
@@ -124,7 +68,6 @@ GetRollableTables
 GetTableRolls
 
 =======================================
-
 9/5/2012 - End-of-day Notes
 
 - Converted entire project to eliminate most of the passing of GameBitsSession params in methods.
@@ -138,4 +81,68 @@ GetTableRolls
   - default GameBitsSession for each user
   - UI's responsibility to display sessions the user has access to, and they must select one. 
 
- 
+=======================================
+12/2/2012 - thoughts on persisting objects
+Loading references to undefined objects has been a problem almost from day one of this project.
+Ideas:
+Give every object an ID.
+Reference objects by ID instead of by pointer
+ - OR use the ID in storage and use pointers in memory. 
+
+Save: save object ID
+
+LoadReference: if the ID does not exist in Repository, create an object with default values and give it that ID.
+
+Load: if the ID exists in storage, update it, otherwise create it. 
+
+So if a reference is loaded before the object, an empty object is created and the referencing object gets a pointer to it; 
+then when the actual object is loaded, the empty object gets filled in. 
+
+Actually this just shifts the problem to the load/save part of the system. 
+When we save a reference to an object how do we convert the reference pointer to the object's ID? 
+Objects would have to have their IDs while in the repository. So we wouldn't assign the ID values during Save, we would have to do it during Create. 
+I guess we could assign during Save -- to save a reference we get the referenced object by pointer and get its ID. If it has none we save the referenced object, which assigns it an ID. The object's Save method would do this and return the ID. If the object already has an ID the Save method would merely return the ID, because an object with an ID means it has already been saved. 
+
+The Load and Save methods could be part of an interface - IPersistent or something. 
+We would pass a pointer to the storage object in Load and Save, which would pass it down to constituent objects. 
+I like the idea of doing this in Load and Save instead of in constructors. Constructors know nothing about the ID. 
+Actually the objects themselves wouldn't even need an ID property. The storage object could construct a temporary index during Load and Save.
+Just a list of IPersistent objects with an ID for each:
+- When an object is Saved we assign an ID and add it to the index.
+- When a reference is Saved we look up the object id in the index, Saving the referenced object if it is not in the index yet. 
+- When an object is Loaded, if its ID is already in the index we update the object's data, otherwise we add the ID and pointer to the index.
+- When a reference is Loaded we have the ID; we look up the pointer by ID, creating an empty object and storing its pointer and ID in the index.
+
+Another approach: completely separate the object classes from the storage scheme. 
+- Create a persistence class with its own methods to load and save a Repository and other GameBits classes. 
+- The classes would have no Load/Save methods and would be unaware of the persistence object. 
+- Keep the Repository class as an in-memory structure that holds everything.
+
+For converting text inputs to objects, create a StringParser class in the Persistence namespace. 
+This class will have a TryParse method modeled after the ItemMaker.Make method, doing what is necessary to generate each object class from a string. 
+
+Small glitch - I want to model StringParser.Parse after ItemMaker.Make, returning an IResolver (instead of returning a bool and requiring an output parameter as the TryParse methods do). But RollableTable and RollableList are not IResolvers. Instead of Resolve methods they have Roll methods that return IResolvers. I will convert these two classes to IResolvers and change their Roll methods to Resolve. I will have to modify all the consuming code to call Resolve instead of Roll. Not hard, just busywork. 
+
+=======================================
+12/13/2012 - Actually RollableTable and RollableList have Roll methods that take parameters; they weren't meant to be resolved without parameters and should not implement IResolver. That's what TableRoll is for, and today I added ListRoll to do the same for RollableList. For string loading I will create an IParsable interface that is implemented by RollableTable, RollableList, and all the IResolvers. The string parser, which is now just called Parser, will have a Parse method that returns an IParsable. To make the compiler happy I added dummy WriteXml and FromXml methods to ListRoll. 
+
+=======================================
+12/14/2012 - Provider idea:
+GameBitsProvider class with abstract Save and Load methods to save/load a group of tables to/from a data source.
+subclasses:
+  XmlProvider: FromXml and WriteXml logic
+  StringProvider: Parse logic
+
+=======================================
+=======================================
+11/20/2016 - resuming work on this after a 4-year hiatus.
+
+I have abandoned the Realmsmith.com website where the demo page was originally hosted. 
+Now the web part of the project is called TableRoller and there is a TableRoller.com, not yet populated.
+I just moved the source code to github and replaced all Realmsmith references with TableRoller.
+
+Not sure what to proceed with first - still getting my bearings in the code.
+I have been trying to reactivate the wiki, which stopped working for some reason - maybe because of the newer .Net version. 
+Project RealmsmithWiki is separate for now so its problems can't affect the TableRoller site build. 
+
+

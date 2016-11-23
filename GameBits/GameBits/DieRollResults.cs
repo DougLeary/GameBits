@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GameBits
 {
+    /// <summary>
+    /// List of integer results of a series of one or more die rolls
+    /// </summary>
 	public class DieRollResults : ArrayList
 	{
 		public enum SortOrder
@@ -27,7 +30,7 @@ namespace GameBits
 		}
 
 		/// <summary>
-		/// Highest single result in a series of rolls
+		/// Highest single result value rolled
 		/// </summary>
 		/// <returns></returns>
 		public int Highest
@@ -39,7 +42,7 @@ namespace GameBits
 		}
 
 		/// <summary>
-		/// Lowest single result in a series of rolls
+		/// Lowest single result value rolled
 		/// </summary>
 		/// <returns></returns>
 		public int Lowest
@@ -51,7 +54,7 @@ namespace GameBits
 		}
 
 		/// <summary>
-		/// Average result in a series of rolls
+		/// Average result value rolled, rounded to nearest integer
 		/// </summary>
 		/// <returns></returns>
 		public int Average
@@ -71,12 +74,12 @@ namespace GameBits
 			}
 		}
 
-		/// <summary>
-		/// Keep only the best results from a series of rolls
-		/// </summary>
-		/// <param name="count"></param>
-		/// <returns></returns>
-		public void KeepBest(int KeepHowMany)
+        /// <summary>
+        /// Keep only a subset of highest result values
+        /// </summary>
+        /// <param name="KeepHowMany">Number of values to keep</param>
+        /// <returns></returns>
+        public void KeepBest(int KeepHowMany)
 		{
 			// make sure we keep at least 1 and not more than we rolled
 			int keep = Math.Max(KeepHowMany, 1);
@@ -94,7 +97,7 @@ namespace GameBits
 		}
 
 		/// <summary>
-		/// Results sorted in ascending order
+		/// Retgurns the results sorted in ascending order
 		/// </summary>
 		/// <returns></returns>
 		public DieRollResults Sorted()

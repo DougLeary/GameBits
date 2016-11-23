@@ -67,22 +67,16 @@ namespace GameBits
 			{
 				case "GameObject":
 					return GameObjectFromXml(node);
-					break;
 				case "Instance":
 					return GameObjectInstanceFromXml(node);
-					break;
 				case "ItemRoll":
 					return ItemRollFromXml(node);
-					break;
 				case "ItemList":
 					return ItemListFromXml(node);
-					break;
 				case "TableRoll":
 					return TableRollFromXml(node);
-					break;
 				default:
 					return null;
-					break;
 			}
 		}
 
@@ -169,28 +163,7 @@ namespace GameBits
 			ItemList obj = new ItemList();
 			foreach (XmlNode child in node.ChildNodes)
 			{
-				IResolver item;
-				switch (child.Name)
-				{
-					case "GameObject":
-						item = GameObjectFromXml(child);
-						break;
-					case "Instance":
-						item = GameObjectInstanceFromXml(child);
-						break;
-					case "ItemRoll":
-						item = ItemRollFromXml(child);
-						break;
-					case "ItemList":
-						item = ItemListFromXml(child);
-						break;
-					case "TableRoll":
-						item = TableRollFromXml(child);
-						break;
-					default:
-						item = null;
-						break;
-				}
+                IResolver item = (IResolver)(LoadObject(child));
 				obj.Add(item);
 			}
 			return obj;
@@ -241,28 +214,7 @@ namespace GameBits
 				row.LowRoll = Utility.ParseAttribute(rowNode, "LowRoll", row.HighRoll);
 
 				// GameObject, Instance, ItemList, TableRoll, ItemRoll
-				XmlNode itemNode = rowNode.FirstChild;
-				switch (itemNode.Name)
-				{
-					case "GameObject":
-						row.Item = GameObjectFromXml(itemNode);
-						break;
-					case "Instance":
-						row.Item = GameObjectInstanceFromXml(itemNode);
-						break;
-					case "ItemRoll":
-						row.Item = ItemRollFromXml(itemNode);
-						break;
-					case "ItemList":
-						row.Item = ItemListFromXml(itemNode);
-						break;
-					case "TableRoll":
-						row.Item = TableRollFromXml(itemNode);
-						break;
-					default:
-						row.Item = null;
-						break;
-				}
+                row.Item = (IResolver)(LoadObject(rowNode.FirstChild));
 				tbl.Add(row);
 			}
 		}

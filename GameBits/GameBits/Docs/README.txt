@@ -4,4 +4,4 @@ There are a few unnecessary files in the project and some unused code because I 
 
 I keep a lot of GM material in wiki format (I've tried Doku, Screwturn and Wikispaces). One thing I would really like to do is add table-rolling capability to a wiki engine - for example, to put random encounter tables in dungeon areas and roll on them at runtime, saving the results in HTML5 local storage. 
 
-The GameBits engine (if it can be called that) requires a separate client. My test example is Realmsmith.com. 
+The GameBits engine (if it can be called that) requires a separate client. My test site is in the RollableTables project - see TableRollDemo.aspx.
