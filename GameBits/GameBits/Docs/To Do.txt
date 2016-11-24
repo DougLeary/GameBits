@@ -82,5 +82,86 @@ A magic amulet with 3 magical effects would be a GameObject whose Contents list 
 An instance of that amulet would be a GameObjectInstance whose Contents list contains 3 spell GameObjectInstances.
 The GameObject's Resolve method would return a GameObjectInstance whose Contents contains the resolved Contents of the GameObject. 
 
-Ok I implemented Contents on GameObject and GameObjectInstance.
+11/23 
+Contents is now an ItemList in GameObject and GameObjectInstance; seems to work fine.
+
+Syntax: 
+<GameObject>
+  <Contains>
+    <GameObject />
+    <GameObject />
+	<TableRoll />
+	... whatever
+  </Contains> 
+</GameObject>
+
+Example spell scroll:
+  <Table TableName="Magic-User Spells Level 1-4">
+    <DieRoll Sides="100" />
+    <Row HighRoll="20">
+      <GameObject Name="Magic Missiles" />
+    </Row>
+    <Row HighRoll="40">
+      <GameObject Name="Stinking Cloud" />
+    </Row>
+    <Row HighRoll="60">
+      <GameObject Name="Fireball" />
+    </Row>
+    <Row HighRoll="80">
+      <GameObject Name="Fly" />
+    </Row>
+    <Row HighRoll="100">
+      <GameObject Name="Enlarge" />
+    </Row>
+  </Table>
+
+  <Table TableName="III.B. Scrolls">
+    <DieRoll Sides="100" />
+    <Row HighRoll="10">
+      <GameObject Name="Scroll, 2 spells, level 1-4">
+        <Contains>
+          <TableRoll TableName="Magic-User Spells Level 1-4" Rolls="2" />
+        </Contains>
+      </GameObject>
+    </Row>
+	...
+  </Table>
+
+  Output:
+  Table row:
+    Scroll, 2 spells, level 1-4 (Roll twice on Magic-User Spells Level 1-4)
+  Results (3 rolls):
+    Scroll, 2 spells, level 1-4 (2 Fireballs)
+	Scroll, 2 spells, level 1-4 (2 Stinking Clouds)
+    Scroll, 2 spells, level 1-4 (Enlarge; Magic Missiles)
+
+Note that when the same spell occurs multiple times in the results the spell name is pluralized and count is applied as with other objects. 
+Standard D&D notation would be "Name of Spell (x2)".
+
+Pluralization should accept count and template params, and handle count=1 by not pluralizing.
+Game-specific items like spells need their own pluralization templates. 
+I have not worked on how to implement game-specific objects yet. A GameObject is still just a string (Name) at this point, but the goal was always to enable user-designed game objects without coding. 
+Custom pluralization would be part of this spec.
+
+------------------------------------------
+Ideas for Game-Specific Objects:
+
+<GameObjectType TypeName="Spell" Singular="{Name}" Plural="{Name} (x{Count})">
+  <Name />
+  <Type />
+  <Level />
+  <Description />
+  <AreaOfEffect />
+  ...
+</GameObjectType>
+
+This would make the following legal:
+
+<Spell Name="Fireball" Type="Magic-User" Level="3" etc />
+
+The XML parsing logic would first check for known tag names, then defined types. 
+When it finds a defined type name such as "Spell" it parses Name, Type, Level, etc. according to rules defined in those attribute definitions. 
+
+=======================================
+
 

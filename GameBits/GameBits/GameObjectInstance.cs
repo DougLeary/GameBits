@@ -78,17 +78,28 @@ namespace GameBits
 
 		public override string ToString()
 		{
-			if (Count <= 0)
-			{
-				return String.Empty;
-			}
+			if (Count <= 0) return String.Empty; 
 
-			if (Count > 1)
-			{
-				return Count.ToString() + " " + Item.Plural;
-			}
+            StringBuilder sb = new StringBuilder();
+            if (Count == 1)
+            {
+                sb.Append(Item.Name);
+            }
+            else
+            {
+                sb.Append(Count.ToString());
+                sb.Append(" ");
+                sb.Append(Item.Plural);
+            }
 
-			return Item.Name;
+            if (Contents != null)
+            {
+                sb.Append(" (");
+                sb.Append(Contents.ToString());
+                sb.Append(")");
+            }
+
+            return sb.ToString();
 		}
 
 		public IResolver Resolve()

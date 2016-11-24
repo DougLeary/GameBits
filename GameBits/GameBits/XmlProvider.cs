@@ -63,6 +63,8 @@ namespace GameBits
 
 		private Object LoadObject(XmlNode node)
 		{
+            if (node == null) return null;
+
 			switch (node.Name)
 			{
 				case "GameObject":
@@ -73,6 +75,8 @@ namespace GameBits
 					return ItemRollFromXml(node);
 				case "ItemList":
 					return ItemListFromXml(node);
+				case "Contains":
+					return ItemListFromXml(node);
 				case "TableRoll":
 					return TableRollFromXml(node);
 				default:
@@ -80,29 +84,37 @@ namespace GameBits
 			}
 		}
 
-		private void SaveObject(Object obj)
+		private void SaveObject(Object obj, string tag)
 		{
-			switch (obj.GetType().Name)
-			{
-				case "GameObject":
-					GameObjectWriteXml((GameObject)obj);
-					break;
-				case "Instance":
-					GameObjectInstanceWriteXml((GameObjectInstance)obj);
-					break;
-				case "ItemRoll":
-					ItemRollWriteXml((ItemRoll)obj);
-					break;
-				case "ItemList":
-					ItemListWriteXml((ItemList)obj);
-					break;
-				case "TableRoll":
-					TableRollWriteXml((TableRoll)obj);
-					break;
-				default:
-					break;
-			}
+            if (obj != null)
+            {
+                switch (obj.GetType().Name)
+                {
+                    case "GameObject":
+                        GameObjectWriteXml((GameObject)obj);
+                        break;
+                    case "Instance":
+                        GameObjectInstanceWriteXml((GameObjectInstance)obj);
+                        break;
+                    case "ItemRoll":
+                        ItemRollWriteXml((ItemRoll)obj);
+                        break;
+                    case "ItemList":
+                        ItemListWriteXml((ItemList)obj, tag);
+                        break;
+                    case "TableRoll":
+                        TableRollWriteXml((TableRoll)obj);
+                        break;
+                    default:
+                        break;
+                }
+            }
 		}
+
+        private void SaveObject(Object obj)
+        {
+            SaveObject(obj, null);
+        }
 
 		private DieRoll DieRollFromXml(XmlNode node)
 		{
@@ -130,7 +142,8 @@ namespace GameBits
 			obj.Name = node.Attributes["Name"].Value;
 			obj.Plural = Utility.ParseAttribute(node, "Plural", GameObject.DefaultPlural(obj.Name));
 			obj.Description = Utility.ParseAttribute(node, "Description", obj.Name);
-			return obj;
+            obj.Contents = ItemListFromXml(node.SelectSingleNode("Contains"));
+            return obj;
 		}
 
 		private void GameObjectWriteXml(GameObject obj)
@@ -139,6 +152,7 @@ namespace GameBits
 			writer.WriteAttributeString("Name", obj.Name);
 			Utility.WriteAttribute(writer, "Plural", obj.Plural, GameObject.DefaultPlural(obj.Name));
 			Utility.WriteAttribute(writer, "Description", obj.Description, obj.Name);
+            SaveObject(obj.Contents, "Contains");
 			writer.WriteEndElement();
 		}
 
@@ -147,7 +161,8 @@ namespace GameBits
 			GameObjectInstance obj = new GameObjectInstance();
 			obj.Count = Utility.ParseAttribute(node, "Count", 1);
 			obj.Item = GameObjectFromXml(node.SelectSingleNode("GameObject"));
-			return obj;
+            obj.Contents = ItemListFromXml(node.SelectSingleNode("Contains"));
+            return obj;
 		}
 
 		private void GameObjectInstanceWriteXml(GameObjectInstance obj)
@@ -155,11 +170,14 @@ namespace GameBits
 			writer.WriteStartElement("Instance");
 			Utility.WriteAttribute(writer, "Count", obj.Count, 1);
 			GameObjectWriteXml(obj.Item);
-			writer.WriteEndElement();
+            SaveObject(obj.Contents, "Contains");
+            writer.WriteEndElement();
 		}
 
 		private ItemList ItemListFromXml(XmlNode node)
 		{
+            if (node == null) return null;
+
 			ItemList obj = new ItemList();
 			foreach (XmlNode child in node.ChildNodes)
 			{
@@ -169,9 +187,9 @@ namespace GameBits
 			return obj;
 		}
 
-		private void ItemListWriteXml(ItemList obj)
+		private void ItemListWriteXml(ItemList obj, string tag)
 		{
-			writer.WriteStartElement("ItemList");
+			writer.WriteStartElement(tag ?? "ItemList");
 			foreach (IResolver item in obj)
 			{
 				SaveObject(item);
