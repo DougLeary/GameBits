@@ -99,7 +99,7 @@
     <Content Include="Docs\README.txt" />
     <Content Include="Docs\RollableTableControl improvements.txt" />
     <Content Include="Docs\GameObject Expansion.txt" />
-    <Content Include="Docs\To Do.txt" />
+    <Content Include="Docs\Journal.txt" />
     <Content Include="Docs\UI ideas.txt" />
   </ItemGroup>
   <ItemGroup>

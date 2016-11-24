@@ -1,6 +1,6 @@
-﻿GameBits To-Do
-==============
-High Level
+﻿GameBits Dev Journal - Doug Leary 
+=================================
+High Level TO DO:
   - Scheme for multiple repositories or namespaces
   - Caching scheme - fetch from storage only when necessary, discard oldest items first 
   - Plug-in scheme for data providers, game-specific components
@@ -134,6 +134,11 @@ Example spell scroll:
     Scroll, 2 spells, level 1-4 (2 Fireballs)
 	Scroll, 2 spells, level 1-4 (2 Stinking Clouds)
     Scroll, 2 spells, level 1-4 (Enlarge; Magic Missiles)
+
+This works but is a cumbersome way to implement real game objects. The above example requires a dedicated table "Magic-User Spells Level 1-4". A better way would be to specify 4 master lists of spell tables, pick one of them by rolling d4, then roll on that table. Repeat 2x. 
+
+-------------------------
+Pluralization Thoughts
 
 Note that when the same spell occurs multiple times in the results the spell name is pluralized and count is applied as with other objects. 
 Standard D&D notation would be "Name of Spell (x2)".
