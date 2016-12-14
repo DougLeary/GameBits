@@ -10,7 +10,7 @@ namespace GameBits
 	/// </summary>
 	public class RollableTableRow : DataRow
 	{
-		new public virtual RollableTable Table      // intentionally override DataRow.Table property to return a RollableTable not a DataTable
+		public virtual RollableTable Table
 		{
 			get { return (RollableTable)base.Table; }
 		}
