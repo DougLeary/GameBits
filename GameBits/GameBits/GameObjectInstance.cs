@@ -5,25 +5,41 @@ using System.Xml;
 
 namespace GameBits
 {
+    /// <summary>
+    /// Generated instance of a GameObject, and the number of individuals occurring. 
+    /// </summary>
 	public class GameObjectInstance : IResolver
 	{
 		private GameObject _item;
-		private int _count;
+        private ItemList _contents;
+        private int _count;
 
+        /// <summary>
+        /// GameObject from which the instance was generated
+        /// </summary>
 		public GameObject Item
 		{
 			get { return _item; }
 			set { _item = value; }
 		}
 
+        /// <summary>
+        /// Number of objects that occur in this instance
+        /// </summary>
 		public int Count
 		{
 			get { return _count; }
 			set { _count = value; }
 		}
 
-		// parameterless constructor for serialization only
-		public GameObjectInstance()
+        public ItemList Contents
+        {
+            get { return _contents; }
+            set { _contents = value; }
+        }
+
+        // parameterless constructor for serialization only
+        public GameObjectInstance()
 		{
 		}
 
@@ -31,6 +47,7 @@ namespace GameBits
 		{
 			Item = item;
 			Count = count;
+            Contents = null;
 		}
 
 		public GameObjectInstance(GameObject item)
@@ -61,17 +78,28 @@ namespace GameBits
 
 		public override string ToString()
 		{
-			if (Count <= 0)
-			{
-				return String.Empty;
-			}
+			if (Count <= 0) return String.Empty; 
 
-			if (Count > 1)
-			{
-				return Count.ToString() + " " + Item.Plural;
-			}
+            StringBuilder sb = new StringBuilder();
+            if (Count == 1)
+            {
+                sb.Append(Item.Name);
+            }
+            else
+            {
+                sb.Append(Count.ToString());
+                sb.Append(" ");
+                sb.Append(Item.Plural);
+            }
 
-			return Item.Name;
+            if (Contents != null)
+            {
+                sb.Append(" (");
+                sb.Append(Contents.ToString());
+                sb.Append(")");
+            }
+
+            return sb.ToString();
 		}
 
 		public IResolver Resolve()

@@ -29,9 +29,9 @@ namespace GameBits
 		public int IgnoreAbove = 0;
 
 		/// <summary>
-		/// Instruction to make a roll against a table 
+		/// Instruction to make a roll on a table 
 		/// </summary>
-		/// <param name="name"></param>
+		/// <param name="table">Table to roll on</param>
 		public TableRoll(RollableTable table)
 		{
 			Table = table;

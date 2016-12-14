@@ -99,7 +99,7 @@
     <Content Include="Docs\README.txt" />
     <Content Include="Docs\RollableTableControl improvements.txt" />
     <Content Include="Docs\GameObject Expansion.txt" />
-    <Content Include="Docs\To Do.txt" />
+    <Content Include="Docs\Journal.txt" />
     <Content Include="Docs\UI ideas.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +118,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

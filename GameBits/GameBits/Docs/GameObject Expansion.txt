@@ -4,21 +4,23 @@ The GameObject class was always meant to be the base type for objects in a playa
 
 Objects in a fantasy world don't really fit into a single hierarchy. For example, you might at first divide objects in a D&D world into characters, NPCs, monsters, weapons, treasures, and environment (terrain, buildings, weather, etc). But then some weapons are intelligent. Monsters can act as NPCs, and NPCs can turn out to be monsters in disguise. Inert objects like statues or rocks can be Animated by magic. A character can Polymorph or Shape Change into a monster. Objects don't fit into fixed slots in a hierarchy. 
 
-Everything in a world has an extensive set of attributes and capabilities. The concept of "monster" is a set of those. The concept of "treasure" is another set. Instead of placing objects into a hierarchy, let's define useful pieces of functionality that can be attached to objects. For example, most animals have the ability to move around. Things that can be attacked and damaged have hit points, health points, structural points - some concept of health. Such things usually also have some resistance to attack - armor class, toughness, or whatever. We can assign these things in groups; for example, when defining a "creature" we would probably give it some level of intelligence, movement, attack, defense, and health. 
+Everything in a world has an extensive set of attributes and capabilities. The concept of "monster" is a set of those. The concept of "treasure" is another set. A single object's properties can belong to multiple overlapping sets, placing it in multiple categories. Instead of a hierarchy let's define useful pieces of functionality that can be attached to objects. For example, most animals have the ability to move around. Things that can be attacked and damaged have hit points, health points, structural points - some concept of how much damage the object can sustain. Such things usually also have some form of resistance to attack - armor class, toughness, or whatever. We can assign these properties in groups; for example, when defining a "creature" we would probably give it intelligence, movement, attack, defense, and health properties. 
 
-In the object-oriented software world a good way to express traits like these is with Interfaces. An interface is a set of properties and/or methods. An object class that has these is said to Implement that interface. Objects can be tested programmatically to see if they implement interfaces. So for example, to determine whether to inflict damage on an object, we could check if it implements the IDamagable interface, and if so call its ReceiveDamage method. For GameObjects I decided that Interfaces would be a good way to divide up behaviors amongst objects without putting them into fixed categories. 
+In object-oriented software a good way to express a set of traits and capabilities is with an Interface - set of properties and/or methods. An object class that has the methods and properties required by an interface is said to implement that interface. Objects can be tested programmatically to see if they implement interfaces. For example, to determine whether to inflict damage on an object, we could check if the object implements an interface called IDamagable, and if so we could call its ReceiveDamage method. 
 
 Example scenario - a PC cleric casts a Spiritual Hammer spell. 
 
 In a computer game the spell does the following things: 
-- creates an instance of a big hammer that has the abilities Fly and Attack
-- assigns the spellcaster as the Controller for the hammer, which means the spellcaster can issue commands to the hammer
-- starts a timer that will trigger the spell's Expiration event, which will Dispel the hammer
+- Create an instance of a big hammer that has the abilities Fly and Attack.
+- Assign the cleric as the Controller for the hammer, which means the cleric object can issue commands to the hammer.
+- Start a timer that will trigger the spell's Expiration event, which will Dispel the hammer later.
   (timers can tick in real time, game time, rounds, turns, etc)
 
-The player or AI controlling the cleric also controls the hammer, until the hammer is Dispelled by the Expiration event (or by some other thing). 
+The cleric now controls the hammer via commands given by the player or AI that controls the cleric, until the hammer is Dispelled by the Expiration event. 
+
+The interface between any object and its controller must be able to recognize when a command is meant for an object it controls, and pass that command to that object.
 
 The game UI would have to let the player know about the items under his or her control. When an item is added to a Controller, the controller passes control to its own Controller, if any, and so on until the message reaches something that implements IController. This interface would have some method, say it's called TakeControl, which gathers information about the actions the controlled object can perform. A Player controller would update the UI to indicate that the object exists and provide a way to give it commands. 
 
-
-For the purpose of a table-rolling utility, to embed in a wiki or some other helper tool for tabletop RPG play, GameBits is pretty much done. I need to find a wiki engine where I can adapt it as a plug-in or add-on module. Parsing Wiki input and converting to XML might be a good additional feature. Indecipherable content and references to undefined tables would be treated as GameObjects and simply displayed. 
+For the purpose of a table-rolling utility to be embedded in a wiki or some other helper tool for tabletop RPG play, GameBits is pretty much done. 
+I need to find a wiki engine where I can create a GameBits plug-in or add-on module. Parsing Wiki input and converting to XML for table creation might be a good feature. Indecipherable content and references to undefined tables would be treated as GameObjects and simply displayed. 
