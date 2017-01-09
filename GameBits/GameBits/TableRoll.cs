@@ -48,7 +48,9 @@ namespace GameBits
 
 		public IResolver Resolve()
 		{
-			if (Rolls > 1)
+            Logger.Write("Resolve TableRoll: " + Table.TableName);
+
+            if (Rolls > 1)
 			{
 				ItemList list = new ItemList();
 				for (int i = 0; i < Rolls; i++)

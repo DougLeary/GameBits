@@ -9,7 +9,7 @@ namespace GameBits
 	/// A keyed list of rollable items, where a row is selected by key instead of by dieroll. 
 	/// Useful for such things as a Treasure Types table. 
 	/// </summary>
-	public class RollableList : Dictionary<string, ItemList>
+	public class RollableList : Dictionary<string, ItemList>, IResolver
 	{
 		public RollableList() : base(StringComparer.OrdinalIgnoreCase)
 		{
@@ -20,9 +20,10 @@ namespace GameBits
 		/// </summary>
 		/// <param name="keyList">Comma-separated list of key values</param>
 		/// <returns></returns>
-		public IResolver ResolveItem(string keyList)
+		public IResolver Resolve(string keyList)
 		{
-			string[] keys = keyList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            Logger.Write("Resolve RollableList: " + keyList);
+            string[] keys = keyList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 			ItemList resolvedList = new ItemList();
 			foreach (string key in keys)
 			{
@@ -42,9 +43,13 @@ namespace GameBits
 			return resolvedList;
 		}
 
+        /// <summary>
+        /// Return empty result since no keys are provided
+        /// </summary>
+        /// <returns></returns>
 		public IResolver Resolve()
 		{
-			return ResolveItem("dummy");
+			return Resolve("dummy");
 		}
 
 		public int CompareTo(object other)

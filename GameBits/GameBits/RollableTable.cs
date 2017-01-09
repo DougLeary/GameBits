@@ -155,7 +155,7 @@ namespace GameBits
 				}
 				else
 				{
-					row.LowRoll = ((RollableTable)row.Table).Dice.Minimum;
+					row.LowRoll = Dice.Minimum;
 				}
 
 				if (row.LowRoll == row.HighRoll)
@@ -227,6 +227,7 @@ namespace GameBits
 					list[st] = count + 1;
 				}
 			}
+
 
 			return list;
 		}
@@ -309,8 +310,9 @@ namespace GameBits
 			table = new RollableTable();
 			for (int i = 0; i < array.Length; i++)
 			{
-				RollableTableRow row = table.GetNewRow(ParseItem(array[0]), i + 1);
+				table.Add(table.GetNewRow(ParseItem(array[i]), i + 1));
 			}
+            table.Dice = new DieRoll(1, array.Length, 0);
 			return (table.Rows.Count > 0);
 		}
 

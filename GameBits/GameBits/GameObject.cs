@@ -66,17 +66,21 @@ namespace GameBits
             {
                 return name.Replace(" of ", "s of ");
             }
-            if (name.Contains(" +"))
-            {
-                return name.Replace(" +", "s +");
-            }
+            //if (name.Contains(" +"))
+            //{
+            //    return name.Replace(" +", "s +");
+            //}
             if (name.EndsWith("y") && !name.EndsWith("ey"))
             {
                 return name.Substring(0, name.Length - 1) + "ies";
             }
-            else if (name.EndsWith("s"))
+            else if (name.EndsWith("es"))
             {
-                return name.Substring(0, name.Length - 1) + "ses";
+                return name;
+            }
+            else if (name.EndsWith("s") || name.EndsWith("z"))
+            {
+                return name + "es";
             }
             else
             {
@@ -105,6 +109,7 @@ namespace GameBits
 
         public IResolver Resolve()
         {
+            Logger.Write("Resolve GameObject: " + Name);
             GameObjectInstance instance = new GameObjectInstance(this, 1);
             if (this.Contents == null)
             {

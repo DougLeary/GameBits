@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Xml;
 
@@ -19,17 +20,18 @@ namespace GameBits
 		public enum Format
 		{
 			// TODO: implement this and also implement a way to format a single item as "Item" or "1 Item";
-			// Format should be a class instead of an enum, with properties Compression, SingleItem, and maybe others. 
+			// Format should be a static class instead of an enum, with properties Compression, SingleItem, and maybe others. 
 			Uncompressed,
 			Compressed
 		}
 
 		/// <summary>
-		/// An ItemList resolves to a list of its own contents individually resolved
+		/// An ItemList resolves to an ItemList of resolved items
 		/// </summary>
 		/// <returns></returns>
 		public IResolver Resolve()
 		{
+            Logger.Write("Resolve ItemList " + this.ToString());
 			ItemList resolvedList = new ItemList();
 			foreach (IResolver item in this)
 			{
@@ -50,17 +52,21 @@ namespace GameBits
 
 		public string ToString(Format format)
 		{
+            // make an empty output list for the compressed version
 			SortedList<IResolver, int> list = new SortedList<IResolver,int>();
 			return ToString(format, list);
 		}
 
 		private string ToString(Format format, SortedList<IResolver, int> list)
 		{
-			// TODO: implement Compressed format
-
+            // load the supplied (presumed empty) SortedList with the sorted content of ItemList.
+            // Each ItemList item is added to the SortedList once.
+            // In each SortedList item the IResolver is the ItemList item and the int is the number of times it occurs in the ItemList.
+			// TODO: implement Uncompressed format (sorted, but with all items included and each count = 1). 
 			StringBuilder sb = new StringBuilder();
 
-			foreach (IResolver item in this)
+            // add each ItemList item to list or increment existing item's count
+            foreach (IResolver item in this)
 			{
 				if (!list.ContainsKey(item))
 				{
@@ -81,21 +87,25 @@ namespace GameBits
 					sb.Append(" ");
 					if (key.GetType() == typeof(GameObject))
 					{
-						sb.Append(((GameObject)key).Plural);
+                        Logger.Write("ToString ItemList item GameObject: " + ((GameObject)key).Name);
+                        sb.Append(((GameObject)key).Plural);
 					}
 					else if (key.GetType() == typeof(GameObjectInstance))
 					{
-						sb.Append(((GameObjectInstance)key).Item.Plural);
+                        Logger.Write("ToString ItemList item GameObjectInstance: " + ((GameObjectInstance)key).Item.Name);
+                        sb.Append(((GameObjectInstance)key).Item.Plural);
 					}
 
 					else
 					{
+                        Logger.Write("ToString ItemList count > 1 key: " + key.ToString());
 						sb.Append(key.ToString());
 					}
 				}
 				else
 				{
-					sb.Append(key.ToString());
+                    Logger.Write("ToString ItemList item " + key.ToString());
+                    sb.Append(key.ToString());
 				}
 				sb.Append(ItemList.Separator);
 			}

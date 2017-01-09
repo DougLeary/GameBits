@@ -57,7 +57,11 @@ namespace GameBits
 
 		public static bool TryParse(string text, out GameObjectInstance instance)
 		{
-			// TO DO: find an existing GameObject with the same name
+			// TODO: find an existing GameObject with the same name before creating one;
+            //   parsing the output of GameObjectInstance.ToString() will require converting pluralized names back to singular;
+            //   We might only be able to parse well-structured plurals, as in "N singular-name" or "singular-name (xN)".
+            //   ToString() could emit well-structured plurals and leave conversational formatting up to the client,
+            //   or it could have a pluralization format parameter, knowing that reverse-parsing conversational plurals will not work.
 			char[] blank = { ' ' };
 			string[] tokens = text.Trim().Split(blank, StringSplitOptions.RemoveEmptyEntries);
 
@@ -77,8 +81,13 @@ namespace GameBits
 		}
 
 		public override string ToString()
-		{
-			if (Count <= 0) return String.Empty; 
+        {
+            return ToString(String.Empty);
+        }
+
+        public string ToString(string fmt)
+        {
+            if (Count <= 0) return String.Empty; 
 
             StringBuilder sb = new StringBuilder();
             if (Count == 1)
@@ -87,9 +96,25 @@ namespace GameBits
             }
             else
             {
-                sb.Append(Count.ToString());
-                sb.Append(" ");
-                sb.Append(Item.Plural);
+                if (fmt == String.Empty)
+                {
+                    sb.Append(Count.ToString());
+                    sb.Append(" ");
+                    sb.Append(Item.Plural);
+                }
+                else if (fmt == "N")
+                {
+                    sb.Append(Count.ToString());
+                    sb.Append(" ");
+                    sb.Append(Item.Name);
+                }
+                else if (fmt == "xN")
+                {
+                    sb.Append(Item.Name);
+                    sb.Append(" (x");
+                    sb.Append(Count.ToString());
+                    sb.Append(")");
+                }
             }
 
             if (Contents != null)
@@ -104,20 +129,54 @@ namespace GameBits
 
 		public IResolver Resolve()
 		{
-			return this;
+            Logger.Write("Resolve GameObjectInstance: " + Item.Name + "(" + Count + ")");
+            return this;
 		}
 
-		public int CompareTo(object other)
-		{
-			if (other == null)
-			{
-				return 1;
-			}
-			else
-			{
-				return String.Compare(this.ToString(), other.ToString());
-			}
-		}
+		//public int CompareTo(object other)
+		//{
+		//	if (other == null)
+		//	{
+		//		return 1;
+		//	}
+		//	else
+		//	{
+		//		return String.Compare(this.ToString(), other.ToString());
+		//	}
+		//}
 
-	}
+        public int CompareTo(object other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                if (other is GameObjectInstance)
+                {
+                    GameObjectInstance otherInstance = (GameObjectInstance)other;
+                    if (this.Item.Name == otherInstance.Item.Name)
+                        return this.Count.CompareTo(otherInstance.Count);
+                    else
+                        return this.Item.Name.CompareTo(otherInstance.Item.Name);
+                }
+                else if (other is GameObject)
+                {
+                    string otherName = other.ToString();
+                    if (this.Item.Name == otherName)
+                        return this.Count.CompareTo(1);
+                    else
+                        return this.Item.Name.CompareTo(otherName);
+
+                }
+                else
+                {
+                    return String.Compare(this.ToString(), other.ToString());
+                }
+            }
+        }
+
+
+    }
 }

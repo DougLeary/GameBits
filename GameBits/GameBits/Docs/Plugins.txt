@@ -1,0 +1,11 @@
+﻿Plugin Architecture
+
+IGameBitsApplication Interface
+  Contains methods that allow plugins to communicate with the app.
+
+IPlugin Interface
+  Used by the app to initialize the plugin.
+
+  Init(IGameBitsApplication: app)
+    
+    

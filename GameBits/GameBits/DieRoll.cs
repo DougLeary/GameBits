@@ -267,12 +267,15 @@ namespace GameBits
 		public int Roll()
 		{
 			List<int> results = new List<int>();
-			int total = 0;
-			for (int i = 0; i < Dice; i++)
+            if (Dice == 0 || Sides == 0) return Math.Max(0, Modifier);
+
+            int total = 0;
+            for (int i = 0; i < Dice; i++)
 			{
 				results.Add(DieRoll.random.Next(1, Sides + 1));
 			}
 			results.Sort();
+
 			for (int i = Dice-1; i >= Dice - Keep; i--)
 			{
 				total += results[i];

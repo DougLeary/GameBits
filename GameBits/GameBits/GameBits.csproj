@@ -68,9 +68,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
+    <Compile Include="IGameBitsPlugin.cs" />
     <Compile Include="IGameBitsProvider.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ListRoll.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="PluginLoader.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RollableTable.cs">
       <SubType>Component</SubType>
@@ -96,6 +99,7 @@
     <Content Include="Docs\Editors.txt" />
     <Content Include="Docs\Abstraction.txt" />
     <Content Include="Docs\Ideas.txt" />
+    <Content Include="Docs\Plugins.txt" />
     <Content Include="Docs\README.txt" />
     <Content Include="Docs\RollableTableControl improvements.txt" />
     <Content Include="Docs\GameObject Expansion.txt" />

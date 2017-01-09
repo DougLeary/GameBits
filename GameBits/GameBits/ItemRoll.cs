@@ -94,9 +94,9 @@ namespace GameBits
 				{
 					list.Add(Item.Resolve());
 				}
-				// note - we ignore the Multiplier here because only a single result item should have a multiplier;
-				// if Item is a TableRoll we roll n times on it, where n = Dice.Roll()
-				return list;
+                // note - we ignore the Multiplier here because only a single result item should have a multiplier;
+                // if Item is a TableRoll we roll n times on it, where n = Dice.Roll()
+                return list;
 			}
 		}
 
@@ -106,7 +106,12 @@ namespace GameBits
 		/// <returns></returns>
 		public IResolver Resolve()
 		{
-			DieRoll pct = new DieRoll(1, 100, 0);
+            string name = String.Empty;
+            if (Item is GameObject) { name = ((GameObject)Item).Name; }
+            else if (Item is GameObjectInstance) { name = ((GameObjectInstance)Item).Item.Name; }
+            Logger.Write("Resolve ItemRoll: " + name + ", " + Dice.ToString() + " " + " x" + Multiplier + " (" + Percent + "%)");
+
+            DieRoll pct = new DieRoll(1, 100, 0);
 			if (pct.Roll() <= Percent)
 			{
 				return Roll();

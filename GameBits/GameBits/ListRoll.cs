@@ -34,7 +34,9 @@ namespace GameBits
 
 		public IResolver Resolve()
 		{
-			return List.ResolveItem(Key);
+            Logger.Write("Resolve ListRoll");
+
+            return List.Resolve(Key);
 		}
 
 	}
