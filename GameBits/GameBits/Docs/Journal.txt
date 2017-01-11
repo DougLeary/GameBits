@@ -195,19 +195,27 @@ NOTE: The RollableTableRow.Table prop would not be available if we convert to a 
 ----------------
 1-5-2017
 Tracking down problems in RollableList Resolve. 
-Some resolved items are disappearing from the final returned list. 
+Some resolved items might be disappearing from the final returned list. 
 In the TreasureTypes RollableList each row (Treasure Type A, B, etc.) is an ItemList containing only ItemRolls.
 Wherever a TableRoll is called for it is wrapped in an ItemRoll so it can be performed a random # of times.
-In some cases TableRoll results are being Resolved that do not appear in the final results. 
-Could be that the last TableRoll result is included, I'm not sure. 
+In some cases it looks like TableRoll results are being Resolved but do not appear in the final results. 
+Could be that only the last TableRoll result is included, I'm not sure. 
 - This would make sense if the ItemRoll result list is being reinitialized for every TableRoll instead of once for the whole ItemRoll. 
 
 -------------
 1-10-2017
-D&D-specific note: when generating a hoard of gems, making an independent roll for each gems results in many gem types.
+
+-- D&D-specific note: when generating a hoard of gems, making an independent roll for each gems results in many gem types.
 Rolling them in groups creates more realistic results, using the die multiplier as the number of gem types. 
 Example: 3d10 gems can be rolled by selecting 3 gem types and rolling d10 for each, to give a result like 6 emeralde, 3 rubies and 4 diamonds.
 This might also be the preferable method of rolling an encounter with creatures of multiple random types.
 There could be one syntax for rolling groups and another for rolling independent individuals. 
 I think groups should be the default method for an ItemRoll with a die multiplier. 
+
+-- Nested TableRolls incur superfluous Resolves. 
+TableRoll.Resolve generates an Item and returns Item.Resolve().
+When TableRolls are nested the deepest one eventually generates a GameObjectItem, which it resolves and returns.
+Each TableRoll nested above it Resolves this returned result again. 
+
+-- See 1/5/2015 notes -- no resolved results are missing; problem was in my diagnostics.
 

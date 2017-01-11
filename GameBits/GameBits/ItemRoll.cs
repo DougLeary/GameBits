@@ -5,7 +5,7 @@ using System.Xml;
 namespace GameBits
 {
     /// <summary>
-    /// Specification to generate an IResolver using a die roll
+    /// Roll a rollable item a random number of times as determined by die roll.
     /// </summary>
 	public class ItemRoll : IResolver
 	{
@@ -15,12 +15,12 @@ namespace GameBits
 		public IResolver Item { get; set; }
 	
 		/// <summary>
-		/// Die roll to determine the number of result items
+		/// Die roll to determine the number of results
 		/// </summary>
 		public DieRoll Dice { get; set; }
 
 		/// <summary>
-		/// Multiplies die roll result to arrive at item count, as in 1d4 x 1000 gp
+		/// Multiplies die roll result to arrive at item count, as in 1d4 x 1000 gp. Default=1.
 		/// </summary>
 		public int Multiplier { get; set; }
 
@@ -29,6 +29,11 @@ namespace GameBits
 		/// </summary>
 		public int Percent { get; set; }
 
+        /// <summary>
+        /// Used for TableRolls only; if true (default) 4d10 means do 4 TableRolls and multiply each result by d10, instead of doing 4d10 TableRolls. 
+        /// </summary>
+        public bool IsGrouped { get; set; }
+        
         /// <summary>
         /// A d20 DieRoll used if no Dice property is assigned
         /// </summary>
@@ -52,6 +57,7 @@ namespace GameBits
 			Dice = dice;
 			Multiplier = multiplier;
 			Percent = percent;
+            IsGrouped = true;
 		}
 
 		public ItemRoll(IResolver item, DieRoll dice, int multiplier)
@@ -88,10 +94,36 @@ namespace GameBits
                 Logger.Write("... rolled " + item.ToString());
                 return item;
 			}
-			else
+			else if (Item is TableRoll && IsGrouped)
+            {
+                // Number of dice in Dice determines number of TableRolls performed. 
+                // Dice rolled with a single die determines number of occurrences of each TableRoll results.
+                // e.g. if Dice = 4d10+2, 4 TableRolls are performed, and d10+2 is rolled to determine number of occurrences of each result. 
+
+                TableRoll t = (TableRoll)Item;
+                Logger.Write("... performing " + Dice.Dice.ToString() + " rolls on " + t.Table.TableName);
+
+                ItemList list = new ItemList();
+                DieRoll singleRoll = new DieRoll(1, Dice.Sides, Dice.Modifier);
+                for (int i = 0; i < Dice.Dice; i++)
+                {
+                    IResolver item = Item.Resolve();
+                    if (item != null)
+                    {
+                        int count = singleRoll.Roll();
+                        Logger.Write("... occurring " + count + " times");
+                        for (int j = 0; j < count; j++)
+                        {
+                            list.Add(item);
+                        }
+                    }
+                }
+                return list;
+            }
+            else 
 			{
 				ItemList list = new ItemList();
-				int count = Dice.Roll();
+				int count = Dice.Roll() * Multiplier;
 
                 Logger.Write("... rolled " + Dice.ToString() + ": " + count.ToString());
 
@@ -99,8 +131,6 @@ namespace GameBits
 				{
 					list.Add(Item.Resolve());
 				}
-                // note - we ignore the Multiplier here because only a single result item should have a multiplier;
-                // if Item is a TableRoll we roll n times on it, where n = Dice.Roll()
                 return list;
 			}
 		}
