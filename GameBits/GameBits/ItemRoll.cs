@@ -84,13 +84,18 @@ namespace GameBits
 			//GameObjectInstance result = new GameObjectInstance(Item, Dice.Roll() * Multiplier);
 			if (Item is GameObject)
 			{ 
-				return new GameObjectInstance((GameObject)Item, Dice.Roll() * Multiplier);
+                GameObjectInstance item = new GameObjectInstance((GameObject)Item, Dice.Roll() * Multiplier);
+                Logger.Write("... rolled " + item.ToString());
+                return item;
 			}
 			else
 			{
 				ItemList list = new ItemList();
 				int count = Dice.Roll();
-				for (int i = 0; i < count; i++)
+
+                Logger.Write("... rolled " + Dice.ToString() + ": " + count.ToString());
+
+                for (int i = 0; i < count; i++)
 				{
 					list.Add(Item.Resolve());
 				}
@@ -109,10 +114,13 @@ namespace GameBits
             string name = String.Empty;
             if (Item is GameObject) { name = ((GameObject)Item).Name; }
             else if (Item is GameObjectInstance) { name = ((GameObjectInstance)Item).Item.Name; }
-            Logger.Write("Resolve ItemRoll: " + name + ", " + Dice.ToString() + " " + " x" + Multiplier + " (" + Percent + "%)");
+            Logger.Write("Resolve ItemRoll: " + Item.ToString() + ", " + Dice.ToString() + " " + " x" + Multiplier + " (" + Percent + "%)");
 
-            DieRoll pct = new DieRoll(1, 100, 0);
-			if (pct.Roll() <= Percent)
+            DieRoll percentRoll = new DieRoll(1, 100, 0);
+            int percent = percentRoll.Roll();
+            Logger.Write("... rolled " + percentRoll.ToString() + ": " + percent.ToString() + "%" + ((percent <= Percent) ? "" : " NO ROLL"));
+
+            if (percent <= Percent)
 			{
 				return Roll();
 			}

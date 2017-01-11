@@ -87,24 +87,20 @@ namespace GameBits
 					sb.Append(" ");
 					if (key.GetType() == typeof(GameObject))
 					{
-                        Logger.Write("ToString ItemList item GameObject: " + ((GameObject)key).Name);
                         sb.Append(((GameObject)key).Plural);
 					}
 					else if (key.GetType() == typeof(GameObjectInstance))
 					{
-                        Logger.Write("ToString ItemList item GameObjectInstance: " + ((GameObjectInstance)key).Item.Name);
                         sb.Append(((GameObjectInstance)key).Item.Plural);
 					}
 
 					else
 					{
-                        Logger.Write("ToString ItemList count > 1 key: " + key.ToString());
 						sb.Append(key.ToString());
 					}
 				}
 				else
 				{
-                    Logger.Write("ToString ItemList item " + key.ToString());
                     sb.Append(key.ToString());
 				}
 				sb.Append(ItemList.Separator);

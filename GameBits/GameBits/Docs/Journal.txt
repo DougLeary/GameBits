@@ -202,3 +202,12 @@ In some cases TableRoll results are being Resolved that do not appear in the fin
 Could be that the last TableRoll result is included, I'm not sure. 
 - This would make sense if the ItemRoll result list is being reinitialized for every TableRoll instead of once for the whole ItemRoll. 
 
+-------------
+1-10-2017
+D&D-specific note: when generating a hoard of gems, making an independent roll for each gems results in many gem types.
+Rolling them in groups creates more realistic results, using the die multiplier as the number of gem types. 
+Example: 3d10 gems can be rolled by selecting 3 gem types and rolling d10 for each, to give a result like 6 emeralde, 3 rubies and 4 diamonds.
+This might also be the preferable method of rolling an encounter with creatures of multiple random types.
+There could be one syntax for rolling groups and another for rolling independent individuals. 
+I think groups should be the default method for an ItemRoll with a die multiplier. 
+

@@ -48,21 +48,22 @@ namespace GameBits
 
 		public IResolver Resolve()
 		{
-            Logger.Write("Resolve TableRoll: " + Table.TableName);
-
+            Logger.Write("Resolve TableRoll: " + this.ToString());
+            IResolver item;
             if (Rolls > 1)
 			{
 				ItemList list = new ItemList();
 				for (int i = 0; i < Rolls; i++)
 				{
-					list.Add(Table.Roll(IgnoreBelow, IgnoreAbove).Resolve());
+                    item = Table.Roll(IgnoreBelow, IgnoreAbove).Resolve();
+                    list.Add(item);
 				}
 				return list;
 			}
 			else
 			{
-				IResolver ir = Table.Roll(IgnoreBelow, IgnoreAbove).Resolve();
-				return Table.Roll(IgnoreBelow, IgnoreAbove).Resolve();
+				item = Table.Roll(IgnoreBelow, IgnoreAbove).Resolve();
+				return item;
 			}
 		}
 

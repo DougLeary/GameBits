@@ -1,0 +1,6 @@
+Currently there are TWO github repositories: GameBits and TableRoller.
+TableRoller is a copy of GameBits/Rpg1, but there are some recently modified items in Rpg1 so they are forked. 
+
+Anything in Rpg1 that should be saved should be moved into TableRoller and Rpg1 should be deleted. 
+TableRoller should probably then be moved into GameBits in place of Rpg1, as a separate project but in the same repository.
+
