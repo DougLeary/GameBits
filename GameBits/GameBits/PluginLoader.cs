@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2013 Christoph Gattnar
+   Based on PluginLoader by Christoph Gattnar.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,11 @@ namespace GameBits
     /// <typeparam name="T"></typeparam>
     public static class PluginLoader<T>
     {
+        private static Type pluginInterfaceType = typeof(T);
+        private static ICollection<Type> pluginTypes = new List<Type>();
+        private static ICollection<T> plugins = new List<T>();
+        private static ICollection<Assembly> assemblies = new List<Assembly>();
+
         public static ICollection<T> LoadPlugins(string path)
         {
             string[] dllFileNames = null;
@@ -35,40 +40,29 @@ namespace GameBits
             {
                 dllFileNames = Directory.GetFiles(path, "*.dll");
 
-                ICollection<Assembly> assemblies = new List<Assembly>(dllFileNames.Length);
                 foreach (string dllFile in dllFileNames)
                 {
                     AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
                     Assembly assembly = Assembly.Load(an);
-                    assemblies.Add(assembly);
-                }
-
-                Type pluginType = typeof(T);
-                ICollection<Type> pluginTypes = new List<Type>();
-                foreach (Assembly assembly in assemblies)
-                {
                     if (assembly != null)
                     {
+                        // An assembly with the same name as an existing does not replace existing,
+                        // therefore the new assembly need only contain new or overridden methods.
+                        // Overridden methods will replace existing as types are assigned.
+                        assemblies.Add(assembly);
                         Type[] types = assembly.GetTypes();
 
                         foreach (Type type in types)
                         {
-                            if (type.IsInterface || type.IsAbstract)
+                            if (!type.IsInterface && !type.IsAbstract
+                                && type.GetInterface(pluginInterfaceType.FullName) != null)
                             {
-                                continue;
-                            }
-                            else
-                            {
-                                if (type.GetInterface(pluginType.FullName) != null)
-                                {
-                                    pluginTypes.Add(type);
-                                }
+                                pluginTypes.Add(type);
                             }
                         }
                     }
                 }
 
-                ICollection<T> plugins = new List<T>(pluginTypes.Count);
                 foreach (Type type in pluginTypes)
                 {
                     T plugin = (T)Activator.CreateInstance(type);
@@ -80,5 +74,6 @@ namespace GameBits
 
             return null;
         }
+
     }
 }

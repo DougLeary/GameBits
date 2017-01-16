@@ -75,7 +75,6 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="PluginLoader.cs" />
-    <Compile Include="Plugins.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RollableTable.cs">
