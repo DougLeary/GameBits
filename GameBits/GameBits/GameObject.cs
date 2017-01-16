@@ -34,6 +34,9 @@ namespace GameBits
             set { _description = value; }
         }
 
+        public Money MonetaryValue;
+        public int XpValue;
+
         public ItemList Contents
         {
             get { return _contents; }
@@ -45,6 +48,8 @@ namespace GameBits
             Name = name;
             Plural = plural;
             Description = name;
+            MonetaryValue = new Money(0, Money.Unit.gp);
+            XpValue = 0;
             Contents = null;
         }
 

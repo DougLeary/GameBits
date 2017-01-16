@@ -68,12 +68,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
-    <Compile Include="IGameBitsPlugin.cs" />
     <Compile Include="IGameBitsProvider.cs" />
+    <Compile Include="IPlugin.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ListRoll.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Money.cs" />
     <Compile Include="PluginLoader.cs" />
+    <Compile Include="Plugins.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RollableTable.cs">
       <SubType>Component</SubType>
