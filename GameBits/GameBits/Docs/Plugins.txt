@@ -1,11 +1,51 @@
 ﻿Plugin Architecture
 
-IGameBitsApplication Interface
-  Contains methods that allow plugins to communicate with the app.
+IPlugin.cs - app-specific interface definition.
+  Only property is Name, which enables PluginManager to index plugins so the app can weakly reference them. 
 
-IPlugin Interface
-  Used by the app to initialize the plugin.
+PluginLoader.cs - Generic plugin loader.
+  Can load any assemblies, does not require them to implement any interface. 
+  Has one static method: LoadPlugins(path), which finds DLLs in the specified folder, loads all the assemblies and returns a List. 
 
-  Init(IGameBitsApplication: app)
-    
-    
+PluginManager.cs
+  Sort of halfway between generic and app-specific because it uses IPlugin.Name, whereas PluginLoader can load any plugin. 
+  Methods:
+    Load(path) calls PluginLoader.LoadPlugins(path) and converts the returned List of plugins to a Dictionary indexed by Name. 
+	IsLoaded(pluginName) checks if a plugin is loaded.
+	Get(pluginName) gets a plugin, if loaded.
+	Clear() clears the whole dictionary (does not unload the assemblies).
+
+Now that I have this plugin architecture I'm not sure what I'm going to do with it. 
+One idea is to write modules for specific RPG systems, the first being AD&D.
+Each module would implement GameObject and GameObjectInstance descendant classes.
+These server-side classes would be for data access and table manipulation only client code would handle game-specific functionality. 
+
+Keeping all game-specific code in script would make the system server-independent. 
+That would mean all XML not relevant to table rolling would have to be passed to the client for interpretation. 
+Could surround all custom content with a <Custom> tag. The parser would convert everything within this tag to JSON and hand it off. 
+
+<GameObject Name="MyMagicItem">
+  <Custom>
+    <Powers>
+	  <Power Name="Paralyzation" /> ... etc
+	</Powers>
+  </Custom>
+</GameObject>
+
+XML is not the only data format we could use, and probably won't be the final one. 
+MongoDB is a possible repository, so the tags would go away. 
+I think Mongo will store any object structure and return it as JSON; 
+  a Mongo-compatible version of GameBits would parse an object for server-relevant properties (instead of tags). 
+
+Actually at this point I think a Mongo version would be the best thing to work on. 
+
+====================================
+Other general design notes from online:
+
+In some plugin architectures the app has an API for plugins to communicate with it and vice versa. 
+
+IYourApplication defines props and methods for plugins to interact with the app.
+
+IYourPlugin defines props and methods for the app to interact with the plugin.
+  Name - to enable weak references to the plugin. 
+  Init(IYourApplication app) - called by the app instance, which passes a pointer to itself so the plugin can call app methods. 
