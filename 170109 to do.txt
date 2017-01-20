@@ -4,3 +4,8 @@ TableRoller is a copy of GameBits/Rpg1, but there are some recently modified ite
 Anything in Rpg1 that should be saved should be moved into TableRoller and Rpg1 should be deleted. 
 TableRoller should probably then be moved into GameBits in place of Rpg1, as a separate project but in the same repository.
 
+1/17 update:
+Starting work on a version of GameBits that uses MongoDb instead of XML files.
+Should be a matter of creating a Provider, but I might have to refactor some of the code if it's not quite conducive to this yet. 
+
+
