@@ -16,5 +16,5 @@ namespace GameBits
 		/// </summary>
 		/// <returns></returns>
 		IResolver Resolve();
-	}
+    }
 }

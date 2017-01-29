@@ -11,8 +11,16 @@ namespace GameBits
 	/// </summary>
 	public class TableRoll : IResolver
 	{
-		// table to roll on
-		private RollableTable _table;
+        // Grouping method in ItemRolls
+        public enum Grouping
+        {               // if ItemRoll.Dice = 4d8:
+            None,       // -- Perform 4d8 TableRolls, each result occurring once unless repeated by random chance. 
+            Strict,     // -- Perform 4 TableRolls, using d8 to determine # of occurrences of each (duplicates may still occur due to chance).
+            Condensed   // -- Perform up to 4 TableRolls, each time randomly deciding whether to do a new TableRoll or add d8 occurrences to the previous result.
+        }
+
+        // table to roll on
+        private RollableTable _table;
 		public RollableTable Table
 		{
 			get { return _table; }

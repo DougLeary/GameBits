@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="IGameBitsProvider.cs" />
+    <Compile Include="InstanceList.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ListRoll.cs" />
@@ -124,6 +125,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ResolverInstance.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

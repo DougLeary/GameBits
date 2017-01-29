@@ -219,3 +219,36 @@ Each TableRoll nested above it Resolves this returned result again.
 
 -- See 1/5/2015 notes -- no resolved results are missing; problem was in my diagnostics.
 
+--------------
+1-22-2017
+
+- In TreasureTypes.aspx a sporadic error occurs in TreasureService.asmx/GetADnD1ETreasureByType:
+
+    ItemList list = (ItemList)(List.Resolve(RemoveSpaces(TreasureTypes)));
+    string strList = list.ToString(ItemList.Format.Compressed).Trim();    
+
+Occasionally list.ToString fails, returning a nonspecific error to the ajax call, but debug does not trap the error when this line is executed. 
+
+ItemList.ToString() compresses the list, converting multiple occurrences of an item to a single item with a count.
+To do this it creates a temporary sorted list; if an item already exists it increments the item's counter. 
+When the list contains another ItemList, the Compare function used to build the sorted list calls ItemList.ToString() to compare it to every other item, which requires the inner ItemList to iterate its own items. 
+I don't know where the failure is occurring, but it occurs more often when the outer ItemList contains more simple objects. 
+--- Ideas
+- When an ItemList is added to another ItemList, add the inner list items separately so the outer list does not contain an ItemList. 
+- ToString() could operate uncompressed. This eliminates the SortedList problem.
+  An explicit Normalize() method could construct an intermediate SortedList, walking all structures in the list and returning a single flattened normalized list of GameObjectInstances. 
+
+---------------
+1-26-2017
+
+Issue: 
+When an ItemList is part of a result list, sorting the results invokes CompareTo on each, 
+which calls ToString multiple times on each item, resulting in excessive iteration of the inner ItemList. 
+ItemLists can be nested arbitrarily deep, resulting in a stack overrun error. 
+
+Ideas:
+- Add a ResolverInstance class with a Count and a pointer to an IResolver.
+  Make GameObjectInstance a descendant of ResolverInstance. Or could ResolverInstance be a generic? 
+  Pluralization: base pluralizer of ResolverInstance would do nothing; GameObjectInstance would do custom pluralization using GameObject.Plural. 
+  ItemList.CompareTo would compare only its first item against the other object, eliminating the runaway iteration problem. 
+

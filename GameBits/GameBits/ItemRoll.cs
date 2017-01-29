@@ -30,7 +30,7 @@ namespace GameBits
 		public int Percent { get; set; }
 
         /// <summary>
-        /// Used for TableRolls only; if true (default) 4d10 means do 4 TableRolls and multiply each result by d10, instead of doing 4d10 TableRolls. 
+        /// Used for TableRolls only; if Dice = 4d8,  means do 4d8 individual rolls,  if true (default) 4d10 means do 4 TableRolls and multiply each result by d10, instead of doing 4d10 TableRolls. 
         /// </summary>
         public bool IsGrouped { get; set; }
         

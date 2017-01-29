@@ -105,10 +105,11 @@ namespace GameBits
         public override string ToString()
         {
             string st = Name;
-            if (Contents != null)
-            {
-                st += " (" + Contents.ToString() + ")";
-            }
+            //TODO: make a show-contents format
+            //if (Contents != null)
+            //{
+            //    st += " (" + Contents.ToString() + ")";
+            //}
             return st;
         }
 
