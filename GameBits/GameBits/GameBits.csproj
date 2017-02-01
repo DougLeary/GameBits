@@ -75,6 +75,7 @@
     <Compile Include="ListRoll.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="MongoProvider.cs" />
     <Compile Include="PluginLoader.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Repository.cs" />

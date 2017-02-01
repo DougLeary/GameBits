@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GameBits
+﻿namespace GameBits
 {
 	public class TextProvider : IGameBitsProvider
 	{

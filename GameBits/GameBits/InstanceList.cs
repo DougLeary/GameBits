@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameBits
+﻿namespace GameBits
 {
     public class InstanceList: ItemList
     {

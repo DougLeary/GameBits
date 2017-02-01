@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameBits
+﻿namespace GameBits
 {
 	public interface IRepository
 	{

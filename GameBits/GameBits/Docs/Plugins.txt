@@ -34,8 +34,8 @@ Could surround all custom content with a <Custom> tag. The parser would convert 
 
 XML is not the only data format we could use, and probably won't be the final one. 
 MongoDB is a possible repository, so the tags would go away. 
-I think Mongo will store any object structure and return it as JSON; 
-  a Mongo-compatible version of GameBits would parse an object for server-relevant properties (instead of tags). 
+Mongo stores data in a JSON-like format and will return it as JSON; 
+A Mongo provider would parse objects for server-relevant properties instead of tags. 
 
 Actually at this point I think a Mongo version would be the best thing to work on. 
 
