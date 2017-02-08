@@ -1,0 +1,18 @@
+﻿Generating Documentation with Doxygen
+
+---- Using GUI:
+Windows Start / Doxywizard
+
+Click File / Open
+Navigate to This PC/Documents/Doxygen
+Select the file Doxyfile
+In the Run tab click the Run doxygen button
+After a few seconds the results will be in Documents/Doxygen/GameBits.
+HTML version root will be: Documents/Doxygen/GameBits/html/index.html
+
+---- Using Command Line:
+
+In a command window navigate to This PC\Documents\Doxygen and enter the command:
+> doxygen
+
+Results will be as above. 

@@ -23,7 +23,7 @@ namespace GameBits
 			Item = null;
 		}
 
-		public int Normalize(int rollValue)
+		public int NormalizeRollRange(int rollValue)
 		{
 			if (rollValue < Table.Dice.Minimum)
 			{
@@ -42,13 +42,13 @@ namespace GameBits
 		public int LowRoll
 		{
 			get { return (int)base["LowRoll"]; }
-			set { base["LowRoll"] = Normalize(value); }
+			set { base["LowRoll"] = NormalizeRollRange(value); }
 		}
 
 		public int HighRoll
 		{
 			get { return (int)base["HighRoll"]; }
-			set { base["HighRoll"] = Normalize(value); }
+			set { base["HighRoll"] = NormalizeRollRange(value); }
 		}
 
 		public string RangeText

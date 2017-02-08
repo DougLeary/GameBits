@@ -130,8 +130,6 @@ Multiple tables:
     <Table>Magic-User Spells Level 4</Table>
   </TableRoll>
 
-
-
 -------------------------
 Pluralization Thoughts
 
@@ -177,20 +175,26 @@ Example:
 		Key="C", Rolls=1
 		Key="H", Rolls=2
 
-Come to think of it, RollableTable and RollableList should both be descendants of an abstract type ResolvableTable.
+Come to think of it, RollableTable and RollableList should both be descendants of an abstract type ResolvableDictionary.
 
-	ResolvableTable would have a Dictionary<T, string> property and an abstract method GetItem(<T> keyValue).
+	ResolvableDictionary<T> where T is the key type (int, string) has a Dictionary<T, string> prop and an abstract method GetItem(T keyValue).
 
-	RollableList would use Dictionary<string, string>
-	RollableTable would use Dictionary<int, string>
+	RollableItem class (replaces RollableTableRow) has props int LowRoll, int HighRoll, IResolver Item
+	RollableTable uses Dictionary<int, RollableItem>
+	RollableTable.GetItem sequentially finds the first item whose key is >= keyValue.
 
-	RollableList's GetItem method would use the base Dictionary's string match.
-	RollableTable's GetItem would sequentially find the first item whose key is >= keyValue.
+	RollableList uses Dictionary<string, IResolver>
+	RollableList.GetItem uses the base Dictionary's string match.
 
 The original reason for implementing RollableTable as a DataTable containing RollableTableRows was
 to make it easily bindable to ASP.Net web controls, which I am not using anymore. 
 NOTE: The RollableTableRow.Table prop would not be available if we convert to a Dictionary. 
   There might be code that depends on this. 
+
+Keeping LowRoll as a property: 
+Even though HighRoll is the only value we need to determine which item to select for a given roll result, we need each row's LowRoll for display purposes.
+For a row object to determine its own LowRoll value by adding 1 to the previous roll's HighRoll, it would need a pointer to the previous row or to the containing table. 
+This would defeat the purpose of eliminating the LowRoll prop. 
 
 ----------------
 1-5-2017
@@ -251,4 +255,12 @@ Ideas:
   Make GameObjectInstance a descendant of ResolverInstance. Or could ResolverInstance be a generic? 
   Pluralization: base pluralizer of ResolverInstance would do nothing; GameObjectInstance would do custom pluralization using GameObject.Plural. 
   ItemList.CompareTo would compare only its first item against the other object, eliminating the runaway iteration problem. 
+
+-----------------
+2-7-2017
+
+I've been working to make RollableTable and RollableList more type-compatible as described above in 12-31-2016 notes. 
+Instead of ResolvableDictionary I created an abstract ResolvableList class with a private Dictionary<KeyType, IResolver>.
+Its only descendant right now is KeyedList (formerly RollableList), which implements a Dictionary<string, IResolver>.
+Next I will make RollableTable a descendant of ResolvableList using Dictionary<int, IResolver>.
 

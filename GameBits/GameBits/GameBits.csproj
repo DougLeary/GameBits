@@ -72,18 +72,19 @@
     <Compile Include="InstanceList.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="ListRoll.cs" />
+    <Compile Include="KeyedListRoll.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="MongoProvider.cs" />
     <Compile Include="PluginLoader.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="ResolvableList.cs" />
     <Compile Include="RollableTable.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RollableTableRow.cs" />
-    <Compile Include="RollableList.cs" />
+    <Compile Include="KeyedList.cs" />
     <Compile Include="DieRoll.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectInstance.cs" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Docs\Classes.txt" />
+    <Content Include="Docs\Doxygen.txt" />
     <Content Include="Docs\Editors.txt" />
     <Content Include="Docs\Abstraction.txt" />
     <Content Include="Docs\Ideas.txt" />

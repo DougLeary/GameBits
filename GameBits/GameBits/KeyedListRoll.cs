@@ -3,12 +3,12 @@
 namespace GameBits
 {
 	/// <summary>
-	/// Resolves a result from a RollableList using a Key value
+	/// Resolves a result from a KeyedList using a Key value
 	/// </summary>
-	public class ListRoll
+	public class KeyedListRoll
 	{
-		private RollableList _list;
-		public RollableList List
+		private KeyedList _list;
+		public KeyedList List
 		{
 			get { return _list; }
 			set { _list = value; }
@@ -20,19 +20,19 @@ namespace GameBits
 		// number of times to roll, i.e. to generate results using the same Key item
 		public int Rolls = 1;
 
-		public ListRoll(RollableList list)
+		public KeyedListRoll(KeyedList list)
 		{
 			List = list;
 		}
 
-		public ListRoll()
+		public KeyedListRoll()
 			: this(null)
 		{
 		}
 
 		public IResolver Resolve()
 		{
-            Logger.Write("Resolve ListRoll");
+            Logger.Write("Resolve KeyedListRoll");
 
             return List.Resolve(Key);
 		}
@@ -41,18 +41,18 @@ namespace GameBits
 }
 
 /*
- * TODO: need a syntax for specifying a ListRoll in a RollableTable;
+ * TODO: need a syntax for specifying a KeyedListRoll in a RollableTable;
  * Example:
- *		<ListRoll TableName="Monster Treasure" Key="D" Rolls="2" />.
+ *		<KeyedListRoll TableName="Monster Treasure" Key="D" Rolls="2" />.
  * Also need a string designator for a Treasure Type in a Monster description;
  * Example:
- *		"A,C,2H" would generate 3 ListRolls: (Key="A", Rolls=1), (Key="C", Rolls=1), (Key="H", Roll=2);
+ *		"A,C,2H" would generate 3 KeyedListRolls: (Key="A", Rolls=1), (Key="C", Rolls=1), (Key="H", Roll=2);
  * 
- * Come to think of it, RollableTable and RollableList should both be descendants of an abstract type ResolvableTable.
+ * Come to think of it, RollableTable and KeyedList should both be descendants of an abstract type ResolvableTable.
  * ResolvableTable would have a Dictionary<T, string> and an abstract method GetItem(<T> keyValue).
- * RollableList would use Dictionary<string, string>
+ * KeyedList would use Dictionary<string, string>
  * RollableTable would use Dictionary<int, string>
- * RollableList's GetItem method would use the base Dictionary's string match.
+ * KeyedList's GetItem method would use the base Dictionary's string match.
  * RollableTable's GetItem would sequentially find the first item whose key is >= keyValue.
  * 
  * The original reason for implementing RollableTable as a DataTable containing RollableTableRows was
