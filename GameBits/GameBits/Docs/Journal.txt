@@ -264,3 +264,13 @@ Instead of ResolvableDictionary I created an abstract ResolvableList class with 
 Its only descendant right now is KeyedList (formerly RollableList), which implements a Dictionary<string, IResolver>.
 Next I will make RollableTable a descendant of ResolvableList using Dictionary<int, IResolver>.
 
+Minor but pervasive tweaks:
+
+- Base interface is now IResolvable, which has a Resolve method.
+- IResolver is IResolvable and IComparable. 
+  IResolvableList is only IResolvable, because IResolvableList types (KeyedList and RollableTable) are not meant to be members of other lists. 
+  Since they are both of type Dictionary<KeyType, IResolver>, any item in them is guaranteed to be IComparable. 
+  ItemList, on the other hand, is designed to be a member of another list, so it implements IResolver.
+
+
+

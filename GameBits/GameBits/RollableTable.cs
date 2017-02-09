@@ -7,7 +7,7 @@ namespace GameBits
 	/// <summary>
 	/// Typed DataTable for rolling items off a list
 	/// </summary>
-	public class RollableTable : DataTable, IResolver
+	public class RollableTable : DataTable, IResolvable
 	{
 		// maximum rolls attempted, to prevent infinite loops on poorly designed tables
 		public static int MaxRollAttempts = 100;

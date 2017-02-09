@@ -79,7 +79,8 @@
     <Compile Include="PluginLoader.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="ResolvableList.cs" />
+    <Compile Include="IResolvableList.cs" />
+    <Compile Include="IResolvable.cs" />
     <Compile Include="RollableTable.cs">
       <SubType>Component</SubType>
     </Compile>

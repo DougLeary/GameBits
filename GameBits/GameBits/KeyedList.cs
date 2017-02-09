@@ -7,14 +7,16 @@ namespace GameBits
 	/// A keyed list of rollable items, where a row is selected by key instead of by dieroll. 
 	/// Useful for such things as a Treasure Types table. 
 	/// </summary>
-	public class KeyedList : ResolvableList<string>, IResolver
+	public class KeyedList : IResolvableList<string>
 	{
+        private Dictionary<string, IResolver> _list;
+
         public KeyedList()
 		{
             _list = new Dictionary<string, IResolver>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public override IResolver GetItem(string key)
+        public IResolver GetItem(string key)
         { 
             if (_list.ContainsKey(key))
             {
@@ -24,11 +26,6 @@ namespace GameBits
             {
                 return null;
             }
-        }
-
-        public override int CompareTo(Object other)
-        {
-            return String.Compare(this.ToString(), other.ToString());
         }
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace GameBits
         /// Return empty result since no keys are provided
         /// </summary>
         /// <returns></returns>
-		public override IResolver Resolve()
+		public IResolver Resolve()
 		{
 			return Resolve(String.Empty);
 		}

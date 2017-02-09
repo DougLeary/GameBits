@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameBits
 {
-    public class ResolverInstance : IResolver
+    public class ResolverInstance : IResolver, IComparable
     {
         private int _count;
         private IResolver _item;

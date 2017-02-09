@@ -5,7 +5,7 @@ namespace GameBits
 	/// <summary>
 	/// Resolves a result from a KeyedList using a Key value
 	/// </summary>
-	public class KeyedListRoll
+	public class KeyedListRoll : IResolver
 	{
 		private KeyedList _list;
 		public KeyedList List
@@ -37,7 +37,18 @@ namespace GameBits
             return List.Resolve(Key);
 		}
 
-	}
+        public int CompareTo(object other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return String.Compare(this.ToString(), other.ToString());
+            }
+        }
+    }
 }
 
 /*
