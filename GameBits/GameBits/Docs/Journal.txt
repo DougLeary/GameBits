@@ -272,5 +272,14 @@ Minor but pervasive tweaks:
   Since they are both of type Dictionary<KeyType, IResolver>, any item in them is guaranteed to be IComparable. 
   ItemList, on the other hand, is designed to be a member of another list, so it implements IResolver.
 
+---------------------
+2/9/2017
 
+ItemList now implements IResolvableList - it's still a List<IResolver> but with a GetItem method.
+Now all lists implement IResolvableList.
+Added KeyList.Roll and ItemList.Roll; each randomly selects an item and returns it resolved.
+Created an IRollable interface with only a Roll method, inmplemented by all 3 lists. 
+Itemlist and KeyedList generate a DieRoll with Sides = count of list items. 
+Now all lists are rollable. 
+ItemList is the only IResolver; since it can be a result of another object's Resolve, we can now generate a random list that is rollable. 
 

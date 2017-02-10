@@ -68,10 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="IGameBitsProvider.cs" />
-    <Compile Include="InstanceList.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="IRollable.cs" />
     <Compile Include="KeyedListRoll.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Money.cs" />

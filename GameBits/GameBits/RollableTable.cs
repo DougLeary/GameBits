@@ -7,11 +7,8 @@ namespace GameBits
 	/// <summary>
 	/// Typed DataTable for rolling items off a list
 	/// </summary>
-	public class RollableTable : DataTable, IResolvable
+	public class RollableTable : DataTable, IResolvable, IRollable
 	{
-		// maximum rolls attempted, to prevent infinite loops on poorly designed tables
-		public static int MaxRollAttempts = 100;
-
 		private DieRoll _dice;
 		public DieRoll Dice
 		{
@@ -186,7 +183,7 @@ namespace GameBits
 		{
 			int roll = -1;
 			int attempts = 0;
-			while (attempts <= MaxRollAttempts && (roll < ignoreBelow || roll > ignoreAbove))
+			while (attempts <= Constants.MaxRollAttempts && (roll < ignoreBelow || roll > ignoreAbove))
 			{
 				roll = Dice.Roll();
 				attempts++;

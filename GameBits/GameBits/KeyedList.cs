@@ -64,6 +64,40 @@ namespace GameBits
 		}
 
         /// <summary>
+        /// Return a resolved, randomly selected item from the list
+        /// </summary>
+        /// <returns></returns>
+        public IResolver Roll()
+        {
+            return Roll(0, int.MaxValue);
+        }
+        
+        /// <summary>
+        /// Return a resolved, randomly selected item from the list
+        /// </summary>
+        /// <param name="ignoreBelow"></param>
+        /// <param name="ignoreAbove"></param>
+        /// <returns></returns>
+        public IResolver Roll(int ignoreBelow, int ignoreAbove)
+        {
+            DieRoll dice = new DieRoll(1, _list.Count, 0);
+            int roll = -1;
+            int attempts = 0;
+            while (attempts <= Constants.MaxRollAttempts && (roll < ignoreBelow || roll > ignoreAbove))
+            {
+                roll = dice.Roll();
+                attempts++;
+            }
+
+            Dictionary<string, IResolver>.Enumerator en = _list.GetEnumerator();
+            for (int i = 0; i < roll; i++) {
+                en.MoveNext();
+            }
+            string key = en.Current.Key;
+            return this.Resolve(key);
+        }
+
+        /// <summary>
         /// Return empty result since no keys are provided
         /// </summary>
         /// <returns></returns>

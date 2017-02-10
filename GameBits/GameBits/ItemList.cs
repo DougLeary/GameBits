@@ -7,7 +7,7 @@ namespace GameBits
     /// <summary>
     /// List of IResolvers that can be treated as a single item, for example as an entry in a RollableTable
     /// </summary>
-    public class ItemList : List<IResolver>, IResolver
+    public class ItemList : List<IResolver>, IResolvableList<int>, IResolver, IRollable
     {
         public static string Separator = "; ";
 
@@ -20,6 +20,17 @@ namespace GameBits
             // Format should be a static class instead of an enum, with properties Compression, SingleItem, and maybe others. 
             Uncompressed,
             Compressed
+        }
+
+        public IResolver  GetItem(int Index)
+        {
+            if (Index < this.Count) {
+                return this[Index];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -39,6 +50,26 @@ namespace GameBits
                 }
             }
             return resolvedList;
+        }
+
+        public IResolver Roll()
+        {
+            return Roll(0, int.MaxValue);
+        }
+
+        public IResolver Roll(int ignoreBelow, int ignoreAbove)
+        {
+            DieRoll dice = new DieRoll(1, this.Count, 0);
+            int roll = -1;
+            int attempts = 0;
+            while (attempts <= Constants.MaxRollAttempts && (roll < ignoreBelow || roll > ignoreAbove))
+            {
+                roll = dice.Roll();
+                attempts++;
+            }
+
+            IResolver result = this[roll];
+            return result.Resolve();
         }
 
         /// <summary>
