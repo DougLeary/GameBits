@@ -268,6 +268,7 @@ Minor but pervasive tweaks:
 
 - Base interface is now IResolvable, which has a Resolve method.
 - IResolver is IResolvable and IComparable. 
+  ResolvableList class is now an interface IResolvableList.
   IResolvableList is only IResolvable, because IResolvableList types (KeyedList and RollableTable) are not meant to be members of other lists. 
   Since they are both of type Dictionary<KeyType, IResolver>, any item in them is guaranteed to be IComparable. 
   ItemList, on the other hand, is designed to be a member of another list, so it implements IResolver.
@@ -275,11 +276,50 @@ Minor but pervasive tweaks:
 ---------------------
 2/9/2017
 
-ItemList now implements IResolvableList - it's still a List<IResolver> but with a GetItem method.
+ItemList now implements IResolvableList - its type is still List<IResolver>, but now it has a GetItem method.
 Now all lists implement IResolvableList.
 Added KeyList.Roll and ItemList.Roll; each randomly selects an item and returns it resolved.
-Created an IRollable interface with only a Roll method, inmplemented by all 3 lists. 
+Created an IRollable interface with only a Roll method, implemented by all 3 lists. 
 Itemlist and KeyedList generate a DieRoll with Sides = count of list items. 
 Now all lists are rollable. 
-ItemList is the only IResolver; since it can be a result of another object's Resolve, we can now generate a random list that is rollable. 
+ItemList is the only list type that implements IResolver; 
+  since ItemList can be a result of another object's Resolve, we can now generate a random list that is rollable. 
+  For example you could generate an encounter table by picking 20 swamp creatures.
+  Later it shouls be possible to use app-specific data to do more interesting things. Examples:
+    - generate an ItemRoll for a Monster using the Monster's # Occurring to create the die roll
+	- generate a RollableTable using Frequency of a Monster to determine its die roll range. 
+
+-----------------
+2/11/2017
+
+Inspiration - Instead of 3 types of lists use one list structure and attach a different index to each. 
+  List type      Index
+  ItemList       none
+  KeyedList      Key values
+  RollableTable  HighRoll values
+
+For RollableTable we would eliminate the table's DieRoll and use the last item's HighRoll value to generate a 1dN DieRoll on the fly.
+This would remove the ability to use a multi-die roll, but I don't think that's a big loss. 
+
+12/12/17
+
+TO DO: add syntax for specifying a KeyedListRoll in a RollableTable:
+    <TableRoll TableName = "Monster Treasure" Key="D" Rolls="2" />.
+
+When Key is specified, call Roll(Key), else call Roll() which will randomly select a key.
+Then there is no need to differentiate between KeyedList and RollableTable. 
+
+Also need a string designator for a Treasure Type in a Monster description;
+Example:
+    "A,C,2H" would generate 3 KeyedListRolls: (Key="A", Rolls=1), (Key="C", Rolls=1), (Key="H", Roll=2);
+
+Come to think of it, RollableTable and KeyedList should both be descendants of an abstract type ResolvableTable.
+ResolvableTable would have a Dictionary<T, string> and an abstract method GetItem(<T> keyValue).
+KeyedList would use Dictionary<string, string>
+RollableTable would use Dictionary<int, string>
+KeyedList's GetItem method would use the base Dictionary's string match.
+RollableTable's GetItem would sequentially find the first item whose key is >= keyValue.
+
+The original reason for implementing RollableTable as a DataTable containing RollableTableRows was
+to make it easily bindable to ASP.Net web controls; with AJAX/JSON/SOA this is not a design issue anymore.
 
